@@ -15,9 +15,9 @@ class UpdateNullableColumnsOnTransactionsTable extends Migration
      */
     public function up()
     {
-        // if (! Type::hasType('double')) {
-        //     Type::addType('double', FloatType::class);
-        // }
+        if (! Type::hasType('double')) {
+            Type::addType('double', FloatType::class);
+        }
         Schema::table('transactions', function (Blueprint $table) {
             $table->string('courier_code')->nullable()->change();
             $table->string('waybill_number')->nullable()->change();
@@ -33,7 +33,7 @@ class UpdateNullableColumnsOnTransactionsTable extends Migration
      */
     public function down()
     {
-        if (!Type::hasType('double')) {
+        if (! Type::hasType('double')) {
             Type::addType('double', FloatType::class);
         }
         Schema::table('transactions', function (Blueprint $table) {
