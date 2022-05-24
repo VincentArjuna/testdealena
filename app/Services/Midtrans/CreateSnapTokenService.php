@@ -19,8 +19,8 @@ class CreateSnapTokenService extends Midtrans
     {
         $params = [
             'transaction_details' => [
-                'order_id' => $this->order->number,
-                'gross_amount' => $this->order->total_price,
+                'order_id' => 1,
+                'gross_amount' => 10000,
             ],
             'item_details' => [
                 [

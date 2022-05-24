@@ -176,6 +176,12 @@ class ProductService
             $model->save();
         }
 
+        //End Bid if Bid Value equals Buy In Value
+        $product = Product::find($request->product_id);
+        if($request->bid_value == $product->bid_bin){
+            $product->bid_end = now();
+            $product->save();
+        }
 
         return $model;
     }

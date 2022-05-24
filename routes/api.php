@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/midtrans', [App\Http\Controllers\MidtransController::class, 'index']);
 // Default Routes
 Route::get('/index', [App\Http\Controllers\API\AuthController::class, 'index'])->name('api');
 
