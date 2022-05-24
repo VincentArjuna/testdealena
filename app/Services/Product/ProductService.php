@@ -138,13 +138,31 @@ class ProductService
 
             throw new HttpResponseException(response()->json($response, 422));
         }
-        $model = new ProductBidder();
-        $model->product_id = $request->product_id;
-        $model->member_id = $request->user()->member->id;
-        $model->bid_value = $request->bid_value;
-        $model->deposit_value = $request->deposit_value;
-        $model->save();
 
+        //Check If member has already bid
+        $model = ProductBidder::where('member_id', $request->user()->member->id)
+                            ->where('product_id', $request->product_id)->first();
+        if(!$model){
+            $model = new ProductBidder();
+            $model->product_id = $request->product_id;
+            $model->member_id = $request->user()->member->id;
+            $model->bid_value = $request->bid_value;
+            $model->deposit_value = $request->deposit_value;
+            $model->save();
+        }else{
+            //Check if Member's Bid is the Highest
+            $highest_bid = ProductBidder::orderBy('bid_value', 'desc')->first();
+            if($request->user()->member->id == $highest_bid->member_id){
+                $response['status'] = false;
+                $response['message'] = 'Your Bid is the Highest!';
+
+                throw new HttpResponseException(response()->json($response, 422));
+            }
+            $model->bid_value = $request->bid_value;
+            $model->save();
+        }
+
+        
         return $model;
     }
 }
