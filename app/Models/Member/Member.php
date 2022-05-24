@@ -17,7 +17,7 @@ class Member extends Model
 
     public function getImageUrlAttribute()
     {
-        return ! empty($this->image)
+        return !empty($this->image)
             ? url('images/members/' . $this->image)
             : url('images/placeholder/no-user.png');
     }
@@ -44,5 +44,10 @@ class Member extends Model
     public function transactions()
     {
         return $this->hasMany(Transaction::class, 'member_id', 'id');
+    }
+
+    public function bidders()
+    {
+        return $this->hasMany(ProductBidder::class, 'product_id', 'id');
     }
 }
