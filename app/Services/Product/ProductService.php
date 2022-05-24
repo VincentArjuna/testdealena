@@ -178,7 +178,7 @@ class ProductService
 
         //End Bid if Bid Value equals Buy In Value
         $product = Product::find($request->product_id);
-        if($request->bid_value == $product->bid_bin){
+        if ($request->bid_value == $product->bid_bin) {
             $product->bid_end = now();
             $product->save();
         }
@@ -188,7 +188,7 @@ class ProductService
 
     public function getCheckout(Request $request)
     {
-        $product = $request->user()->member->bidder->product;
+        $product = $request->user()->member->bidder;
         return $product;
     }
 }
