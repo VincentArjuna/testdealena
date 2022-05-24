@@ -138,7 +138,6 @@ class ProductService
 
             throw new HttpResponseException(response()->json($response, 422));
         }
-        dd($request->user()->member->id);
         $model = new ProductBidder();
         $model->product_id = $request->product_id;
         $model->member_id = $request->user()->member->id;
