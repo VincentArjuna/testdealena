@@ -134,18 +134,20 @@ class ProductService
         }
 
         // Check if bidder is product owner
-        $is_owner = Product::query()
-            //->where('store_id', $request->user()->member->store->id)
-            ->where('store_id', $request->user()->store->id)
-            ->where('id', $request->product_id)
-            ->count() > 0
-            ? true
-            : false;
-        if ($is_owner) {
-            $response['status'] = false;
-            $response['message'] = 'Product owner can\'t bid on your own product!';
+        if (!empty($request->user()->store)) {
+            $is_owner = Product::query()
+                //->where('store_id', $request->user()->member->store->id)
+                ->where('store_id', $request->user()->store->id)
+                ->where('id', $request->product_id)
+                ->count() > 0
+                ? true
+                : false;
+            if ($is_owner) {
+                $response['status'] = false;
+                $response['message'] = 'Product owner can\'t bid on your own product!';
 
-            throw new HttpResponseException(response()->json($response, 422));
+                throw new HttpResponseException(response()->json($response, 422));
+            }
         }
 
         //Check If member has already bid
@@ -159,6 +161,7 @@ class ProductService
             $model->deposit_value = $request->deposit_value;
             $model->save();
         } else {
+
             //Check if Member's Bid is the Highest
             $highest_bid = ProductBidder::orderBy('bid_value', 'desc')->first();
             if ($request->user()->member->id == $highest_bid->member_id) {
@@ -167,6 +170,8 @@ class ProductService
 
                 throw new HttpResponseException(response()->json($response, 422));
             }
+
+            //Update Bid Value of Bidder
             $model->bid_value = $request->bid_value;
             $model->save();
         }
