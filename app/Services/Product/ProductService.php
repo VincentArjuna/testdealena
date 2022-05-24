@@ -31,7 +31,7 @@ class ProductService
         }
 
         // Check if has id
-        if (! empty($request->id)) {
+        if (!empty($request->id)) {
             $product = Product::find($request->id);
         } else {
             $product = new Product();
@@ -77,7 +77,8 @@ class ProductService
         $image_props = ['images_front', 'images_back', 'images_left', 'images_right'];
         foreach ($request->except($image_props) as $key => $value) {
             if (in_array($key, ['bid_start', 'bid_end', 'bid_end_range'])) {
-                if ($key == 'bid_start' && $request->filled('bid_start') ||
+                if (
+                    $key == 'bid_start' && $request->filled('bid_start') ||
                     $key == 'bid_end' && $request->filled('bid_end')
                 ) {
                     $product->{$key} = Date::parse($value)->format('Y-m-d H:i:s');
@@ -124,12 +125,13 @@ class ProductService
             throw new HttpResponseException(response()->json($response, 422));
         }
         // Check if bidder is product owner
+        return $request->user();
         $is_owner = Product::query()
             ->where('store_id', $request->user()->member->store->id)
             ->where('id', $request->product_id)
             ->count() > 0
-                ? true
-                : false;
+            ? true
+            : false;
         if ($is_owner) {
             $response['status'] = false;
             $response['message'] = 'Product owner can\'t bid on your own product!';
