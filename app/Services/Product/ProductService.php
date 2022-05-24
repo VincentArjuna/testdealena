@@ -125,6 +125,7 @@ class ProductService
             throw new HttpResponseException(response()->json($response, 422));
         }
         // Check if bidder is product owner
+        dd($request->user()->member);
         $is_owner = Product::query()
             ->where('store_id', $request->user()->member->store->id)
             ->where('id', $request->product_id)
