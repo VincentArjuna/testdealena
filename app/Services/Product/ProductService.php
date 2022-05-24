@@ -124,6 +124,15 @@ class ProductService
 
             throw new HttpResponseException(response()->json($response, 422));
         }
+
+        //Check if bidder is member
+        if (empty($request->user()->member)) {
+            $response['status'] = false;
+            $response['message'] = 'You must be a member!';
+
+            throw new HttpResponseException(response()->json($response, 422));
+        }
+
         // Check if bidder is product owner
         $is_owner = Product::query()
             //->where('store_id', $request->user()->member->store->id)
@@ -141,18 +150,18 @@ class ProductService
 
         //Check If member has already bid
         $model = ProductBidder::where('member_id', $request->user()->member->id)
-                            ->where('product_id', $request->product_id)->first();
-        if(!$model){
+            ->where('product_id', $request->product_id)->first();
+        if (!$model) {
             $model = new ProductBidder();
             $model->product_id = $request->product_id;
             $model->member_id = $request->user()->member->id;
             $model->bid_value = $request->bid_value;
             $model->deposit_value = $request->deposit_value;
             $model->save();
-        }else{
+        } else {
             //Check if Member's Bid is the Highest
             $highest_bid = ProductBidder::orderBy('bid_value', 'desc')->first();
-            if($request->user()->member->id == $highest_bid->member_id){
+            if ($request->user()->member->id == $highest_bid->member_id) {
                 $response['status'] = false;
                 $response['message'] = 'Your Bid is the Highest!';
 
@@ -162,7 +171,7 @@ class ProductService
             $model->save();
         }
 
-        
+
         return $model;
     }
 }
