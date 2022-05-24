@@ -48,6 +48,6 @@ class Member extends Model
 
     public function bidders()
     {
-        return $this->hasMany(ProductBidder::class, 'product_id', 'id');
+        return $this->hasMany(ProductBidder::class, 'member_id', 'id');
     }
 }
