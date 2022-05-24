@@ -125,18 +125,19 @@ class ProductService
             throw new HttpResponseException(response()->json($response, 422));
         }
         // Check if bidder is product owner
-        dd($request->user());
-        $is_owner = Product::query()
-            ->where('store_id', $request->user()->member->store->id)
-            ->where('id', $request->product_id)
-            ->count() > 0
-            ? true
-            : false;
-        if ($is_owner) {
-            $response['status'] = false;
-            $response['message'] = 'Product owner can\'t bid on your own product!';
+        if (!empty($request->user()->member->store)) {
+            $is_owner = Product::query()
+                ->where('store_id', $request->user()->member->store->id)
+                ->where('id', $request->product_id)
+                ->count() > 0
+                ? true
+                : false;
+            if ($is_owner) {
+                $response['status'] = false;
+                $response['message'] = 'Product owner can\'t bid on your own product!';
 
-            throw new HttpResponseException(response()->json($response, 422));
+                throw new HttpResponseException(response()->json($response, 422));
+            }
         }
 
         $model = new ProductBidder();
