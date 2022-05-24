@@ -185,4 +185,10 @@ class ProductService
 
         return $model;
     }
+
+    public function getCheckout(Request $request)
+    {
+        $product = $request->user()->member->bidder->product;
+        return $product;
+    }
 }

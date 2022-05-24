@@ -36,8 +36,8 @@ class ProductController extends Controller
             $has_bid = $product->bidders()
                 ->where('member_id', $request->member_id)
                 ->count() > 0
-                    ? true
-                    : false;
+                ? true
+                : false;
         }
 
         if (empty($product)) {
@@ -139,6 +139,13 @@ class ProductController extends Controller
         $response['message'] = 'Successfully submit bid';
         $response['data'] = (new ProductService)->submitBid($request);
 
+        return response()->json($response);
+    }
+
+    public function getCheckout(Request $request)
+    {
+        $response['status'] = true;
+        $response['data'] = (new ProductService)->getCheckout($request);
         return response()->json($response);
     }
 }
