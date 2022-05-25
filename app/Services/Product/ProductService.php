@@ -181,14 +181,11 @@ class ProductService
         if ($request->bid_value == $product->bid_bin) {
             $product->bid_end = now();
             $product->save();
+
+            //Create Transaction
+            $transaction = (new TransactionService)->storeTransaction($product, $request->user()->member->id);
         }
 
         return $model;
-    }
-
-    public function getCheckout(Request $request)
-    {
-        $bids = ProductBidder::where('member_id', $request->user()->member->id)->get();
-        return $bids;
     }
 }

@@ -141,11 +141,4 @@ class ProductController extends Controller
 
         return response()->json($response);
     }
-
-    public function getCheckout(Request $request)
-    {
-        $response['status'] = true;
-        $response['data'] = (new ProductService)->getCheckout($request);
-        return response()->json($response);
-    }
 }

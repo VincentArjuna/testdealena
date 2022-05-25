@@ -86,8 +86,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/product/filter', [App\Http\Controllers\API\Product\ProductController::class, 'filter']);
     Route::post('/product/bid/submit', [App\Http\Controllers\API\Product\ProductController::class, 'submitBid']);
 
-    Route::get('/getcheckout', [App\Http\Controllers\API\Product\ProductController::class, 'getCheckout']);
-
     // RajaOngkir routes
     Route::get('/delivery/cost', [App\Http\Controllers\API\Location\LocationController::class, 'getCost']);
 
