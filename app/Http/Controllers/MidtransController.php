@@ -13,6 +13,9 @@ class MidtransController extends Controller
         $midtrans = new CreateSnapTokenService($transaction);
         $snapToken = $midtrans->getSnapToken();
 
-        return $snapToken;
+        return response()->json([
+            'token' => $snapToken,
+            'redirect_url' => "https://app.sandbox.midtrans.com/snap/v2/vtweb/" . $snapToken,
+        ]);
     }
 }
