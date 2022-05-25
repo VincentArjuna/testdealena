@@ -32,8 +32,10 @@ class TransactionController extends Controller
     public function detail(Request $request)
     {
         $user = $request->user();
-        $transaction = $user->member
-            ->transactions()->paginate(10);
+        $transaction = collect($user->member
+            ->transactions()
+            ->where('id', $request->id)
+            ->first());
 
         return response()->json([
             'transaction' => $transaction
