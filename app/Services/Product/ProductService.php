@@ -188,7 +188,7 @@ class ProductService
 
     public function getCheckout(Request $request)
     {
-        $product = Product::get();
+        $product = Product::find(4);
         $product = $product->bidders;
         return $product;
     }
