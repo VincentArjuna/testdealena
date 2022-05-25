@@ -31,8 +31,8 @@ class CreateSnapTokenService extends Midtrans
                 ]
             ],
             'customer_details' => [
-                'first_name' => $this->transaction->member_detail->first_name,
-                'last_name' => $this->transaction->member_detail->last_name,
+                'first_name' => $this->transaction->member_detail->get('first_name'),
+                'last_name' => $this->transaction->member_detail->get('last_name'),
             ]
         ];
 
