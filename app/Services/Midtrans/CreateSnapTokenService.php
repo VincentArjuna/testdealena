@@ -17,7 +17,7 @@ class CreateSnapTokenService extends Midtrans
 
     public function getSnapToken()
     {
-        return $this->transaction->products;
+        return $this->transaction->products->qty;
         $params = [
             'transaction_details' => [
                 'order_id' => $this->transaction->id,
