@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API\Member;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product\Transaction;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -30,10 +29,12 @@ class TransactionController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function detail(Request $request)
+    public function detail($id, Request $request)
     {
-        $user = $request->user();
-        $transaction = Transaction::find($request->id);
+        $transaction = $request->user()->member
+            ->transactions()
+            ->where('id', $id)
+            ->first();
 
         return response()->json([
             'transaction' => $transaction

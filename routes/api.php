@@ -65,7 +65,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/member/change-pin', [App\Http\Controllers\API\User\ProfileController::class, 'changePin']);
     Route::get('/member/followed-stores', [App\Http\Controllers\API\User\ProfileController::class, 'followedStores']);
     Route::get('/member/transaction', [App\Http\Controllers\API\Member\TransactionController::class, 'index']);
-    Route::get('/member/transaction/detail', [App\Http\Controllers\API\Member\TransactionController::class, 'detail']);
+    Route::get('/member/transaction/detail/{id}', [App\Http\Controllers\API\Member\TransactionController::class, 'detail']);
 
     // Member address routes
     Route::get('/member/addresses', [App\Http\Controllers\API\Member\MemberAddressController::class, 'index']);
