@@ -25,15 +25,14 @@ class CreateSnapTokenService extends Midtrans
             'item_details' => [
                 [
                     'id' => 1,
-                    'price' => '150000',
-                    'quantity' => 1,
-                    'name' => 'Flashdisk Toshiba 32GB',
+                    'price' => $this->transaction->subtotal,
+                    'quantity' => $this->transaction->products->qty,
+                    'name' => $this->transaction->products->name,
                 ]
             ],
             'customer_details' => [
-                'first_name' => 'Martin Mulyo Syahidin',
-                'email' => 'mulyosyahidin95@gmail.com',
-                'phone' => '081234567890',
+                'first_name' => $this->transaction->member_detail->first_name,
+                'last_name' => $this->transaction->member_detail->last_name,
             ]
         ];
 

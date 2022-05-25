@@ -7,7 +7,7 @@ use App\Services\Midtrans\CreateSnapTokenService;
 
 class MidtransController extends Controller
 {
-    public function index($transaction_id)
+    public function getToken($transaction_id)
     {
         $transaction = Transaction::find($transaction_id);
         $midtrans = new CreateSnapTokenService($transaction);
