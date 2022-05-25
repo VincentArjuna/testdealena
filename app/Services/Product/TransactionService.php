@@ -28,6 +28,7 @@ class TransactionService
         $model->store_detail = $store;
         $model->products = $product;
         $model->subtotal = $product->highest_bidder->bid_value;
+        $model->grandtotal = $product->highest_bidder->bid_value;
         $model->save();
 
         return $model;

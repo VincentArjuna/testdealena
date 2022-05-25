@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product\Transaction;
 use App\Services\Midtrans\CreateSnapTokenService;
 
 class MidtransController extends Controller
 {
-    public function index()
+    public function index($transaction_id)
     {
-        $order = [];
-        $midtrans = new CreateSnapTokenService($order);
+        $transaction = Transaction::find($transaction_id);
+        $midtrans = new CreateSnapTokenService($transaction);
         $snapToken = $midtrans->getSnapToken();
 
         return $snapToken;

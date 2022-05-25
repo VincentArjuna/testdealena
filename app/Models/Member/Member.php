@@ -46,8 +46,4 @@ class Member extends Model
         return $this->hasMany(Transaction::class, 'member_id', 'id');
     }
 
-    public function bidders()
-    {
-        return $this->hasMany(ProductBidder::class, 'member_id', 'id');
-    }
 }
