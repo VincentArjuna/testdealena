@@ -32,7 +32,7 @@ class TransactionController extends Controller
     public function detail(Request $request)
     {
         $transaction = $request->user()->member
-            ->transactions();
+            ->transactions()->get();
 
         return response()->json([
             'transaction' => $transaction
