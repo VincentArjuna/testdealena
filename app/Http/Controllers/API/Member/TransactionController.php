@@ -31,8 +31,11 @@ class TransactionController extends Controller
      */
     public function detail(Request $request)
     {
-        $transaction = $request->user()->member
-            ->transactions()->get();
+        $user = $request->user();
+        $transaction = $user->member
+            ->transactions()
+            ->where('id', $request->id)
+            ->first();
 
         return response()->json([
             'transaction' => $transaction
