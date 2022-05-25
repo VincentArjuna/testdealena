@@ -33,9 +33,7 @@ class TransactionController extends Controller
     {
         $user = $request->user();
         $transaction = $user->member
-            ->transactions()
-            ->where('id', $request->id)
-            ->first();
+            ->transactions()->paginate(10);
 
         return response()->json([
             'transaction' => $transaction
