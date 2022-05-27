@@ -73,7 +73,7 @@ class TransactionController extends Controller
     {
         $response['status'] = true;
         $response['message'] = 'Successfully updated transaction';
-        $response['data'] = (new TransactionService)->addWayBillCost($request);
+        $response['data'] = (new TransactionService)->addWayBillCost($request); 
 
         return response()->json($response);
     }
