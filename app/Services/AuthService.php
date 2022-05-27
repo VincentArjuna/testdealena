@@ -40,16 +40,11 @@ class AuthService
         if (!empty($request->birth_date)) {
             $member = new Member();
             $member->user_id = $user->id;
+            $member->first_name = $user->name;
             $member->birth_date = $request->birth_date;
             $member->gender = $request->gender;
             $member->save();
         }
-
-        return response()->json([
-            'user' => $user,
-            'member' => $member,
-            'message' => 'Successfully Submit Member Info'
-        ]);
 
         return [
             'user' => $user,
