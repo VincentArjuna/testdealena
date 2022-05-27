@@ -2,6 +2,7 @@
 
 namespace App\Models\Member;
 
+use App\Models\Location\Province;
 use App\Models\User;
 use App\Services\RajaOngkirService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,21 +21,22 @@ class MemberAddress extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
-    
-    /*
+
+
     public function getProvinceAttribute()
     {
-        return (new RajaOngkirService())->getProvince($this->province_id);
+        //return (new RajaOngkirService())->getProvince($this->province_id);
+        return Province::where('province_id', $this->province_id)->first;
     }
 
     public function getCityAttribute()
     {
-        return (new RajaOngkirService())->getCity($this->province_id, $this->city_id);
+        //return (new RajaOngkirService())->getCity($this->province_id, $this->city_id);
+        return Province::where('city_id', $this->city_id)->first;
     }
 
     public function getDistrictAttribute()
     {
-        return (new RajaOngkirService())->getDistrict($this->city_id, $this->district_id);
+        //return (new RajaOngkirService())->getDistrict($this->city_id, $this->district_id);
     }
-    */
 }
