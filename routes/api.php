@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/midtrans/getToken/transaction/{transaction_id}', [App\Http\Controllers\MidtransController::class, 'getToken']);
 // Default Routes
 Route::get('/index', [App\Http\Controllers\API\AuthController::class, 'index'])->name('api');
 
@@ -66,6 +65,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/member/followed-stores', [App\Http\Controllers\API\User\ProfileController::class, 'followedStores']);
     Route::get('/member/transaction', [App\Http\Controllers\API\Member\TransactionController::class, 'index']);
     Route::get('/member/transaction/detail/{id}', [App\Http\Controllers\API\Member\TransactionController::class, 'detail']);
+    Route::post('/member/transaction/add-waybill_cost', [App\Http\Controllers\API\Member\TransactionController::class, 'addWayBillCost']);
+
+    //Midtrans
+    Route::get('/midtrans/getToken/transaction/{transaction_id}', [App\Http\Controllers\TransactionController::class, 'getToken']);
 
     // Member address routes
     Route::get('/member/addresses', [App\Http\Controllers\API\Member\MemberAddressController::class, 'index']);

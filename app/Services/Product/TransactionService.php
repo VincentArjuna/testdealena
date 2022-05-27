@@ -5,6 +5,7 @@ namespace App\Services\Product;
 use App\Models\Member\Member;
 use App\Models\Product\Transaction;
 use App\Models\Product\Product;
+use Illuminate\Http\Request;
 
 class TransactionService
 {
@@ -32,5 +33,22 @@ class TransactionService
         $model->save();
 
         return $model;
+    }
+
+    /**
+     * Add waybill cost
+     * adn update grandtotal
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \App\Models\Product\Transaction
+     */
+    public function addWayBillCost(Request $request)
+    {
+        $transaction = Transaction::find($request->id);
+        $transaction->waybill_cost = $request->waybill_cost;
+        $transaction->grandtotal = $transaction->subtotal + $request->waybill_cost;
+        $transaction->save();
+
+        return $transaction;
     }
 }
