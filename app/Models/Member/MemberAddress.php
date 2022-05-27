@@ -2,6 +2,7 @@
 
 namespace App\Models\Member;
 
+use App\Models\Location\City;
 use App\Models\Location\Province;
 use App\Models\User;
 use App\Services\RajaOngkirService;
@@ -32,7 +33,7 @@ class MemberAddress extends Model
     public function getCityAttribute()
     {
         //return (new RajaOngkirService())->getCity($this->province_id, $this->city_id);
-        return Province::where('city_id', $this->city_id)->first();
+        return City::where('city_id', $this->city_id)->first();
     }
 
     public function getDistrictAttribute()
