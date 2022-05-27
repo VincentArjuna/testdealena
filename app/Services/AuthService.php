@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Member\Member;
 use App\Models\User;
 use App\Notifications\User\PasswordResetNotification;
 use App\Services\Member\MemberAddressService;
@@ -36,6 +37,20 @@ class AuthService
         DB::commit();
         Auth::attempt(['email' => $user->email, 'password' => $request['password']]);
 
+        if (!empty($request->birth_date)) {
+            $member = new Member();
+            $member->user_id = $user->id;
+            $member->birth_date = $request->birth_date;
+            $member->gender = $request->gender;
+            $member->save();
+        }
+
+        return response()->json([
+            'user' => $user,
+            'member' => $member,
+            'message' => 'Successfully Submit Member Info'
+        ]);
+
         return [
             'user' => $user,
             'address' => $address
@@ -51,7 +66,7 @@ class AuthService
     public function login($request)
     {
         $response['status'] = false;
-        if (! isset($request['login_id'])) {
+        if (!isset($request['login_id'])) {
             $request['login_id'] = $request['email'] ?? $request['phone'];
         }
         $user = User::query()->where('email', $request['login_id'])
@@ -62,7 +77,7 @@ class AuthService
 
             throw new HttpResponseException(response()->json($response, 422));
         }
-        if (! password_verify($request['password'], $user->password)) {
+        if (!password_verify($request['password'], $user->password)) {
             $response['message'] = 'Login failed, Password not match';
 
             throw new HttpResponseException(response()->json($response, 422));

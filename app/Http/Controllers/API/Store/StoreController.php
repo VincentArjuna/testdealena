@@ -32,6 +32,7 @@ class StoreController extends Controller
                     : 'Sorry you haven\'t created a store!'
             ]);
         }
+        
     }
 
     /**
