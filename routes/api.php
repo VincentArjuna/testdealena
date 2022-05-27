@@ -68,7 +68,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/member/transaction/add-waybill_cost', [App\Http\Controllers\API\Member\TransactionController::class, 'addWayBillCost']);
 
     //Midtrans
-    Route::get('/midtrans/getToken/transaction/{transaction_id}', [App\Http\Controllers\TransactionController::class, 'getToken']);
+    Route::get('/midtrans/getToken/transaction/{transaction_id}', [App\Http\Controllers\Member\TransactionController::class, 'getToken']);
 
     // Member address routes
     Route::get('/member/addresses', [App\Http\Controllers\API\Member\MemberAddressController::class, 'index']);
