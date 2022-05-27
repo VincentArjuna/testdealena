@@ -22,15 +22,16 @@ class StoreController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-
-        return response()->json([
-            'user' => $user,
-            'store' => $user->store,
-            'couriers' => $user->store->couriers,
-            'message' => ! empty($user->store)
-                ? 'Successfully get store data'
-                : 'Sorry you haven\'t created a store!'
-        ]);
+        if (!empty($request->user()->store)) {
+            return response()->json([
+                'user' => $user,
+                'store' => $user->store,
+                'couriers' => $user->store->couriers,
+                'message' => !empty($user->store)
+                    ? 'Successfully get store data'
+                    : 'Sorry you haven\'t created a store!'
+            ]);
+        }
     }
 
     /**
