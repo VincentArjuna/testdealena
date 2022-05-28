@@ -15,6 +15,7 @@ composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader -
 
 #Copy ENV
 php -r "file_exists('.env') || copy('.env.example', '.env');"
+echo "Env Created"
 
 # Clear the old cache
 php artisan clear-compiled
