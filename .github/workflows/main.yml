@@ -16,4 +16,4 @@ jobs:
         username: ${{ secrets.USERNAME }}
         port: ${{ secrets.PORT }}
         key: ${{ secrets.SSHKEY }}
-        script: "cd /laravel && ./.scripts/deploy.sh"
+        script: "pwd"
