@@ -19,7 +19,7 @@ class LocationController extends Controller
     public function getProvince(RajaOngkirService $service, Request $request)
     {
         $id = $request->id;
-
+        return $id;
         return response()->json($service->getProvince($id));
     }
 
