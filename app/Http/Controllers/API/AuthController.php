@@ -17,7 +17,7 @@ class AuthController extends Controller
      */
     public function index()
     {
-        return response()->json(['message' => 'Welcome to Dealena API, You need to login to access API\'s']);
+        return response()->json(['message' => 'Welcome to Dealena APa, You need to login to access API\'s']);
     }
 
     /**
