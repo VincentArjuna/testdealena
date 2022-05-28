@@ -164,6 +164,7 @@ class ProductService
 
             //Check if Member's Bid is the Highest
             $highest_bid = ProductBidder::orderBy('bid_value', 'desc')->first();
+            return $highest_bid;
             if ($request->user()->member->id == $highest_bid->member_id) {
                 $response['status'] = false;
                 $response['message'] = 'Your Bid is the Highest!';

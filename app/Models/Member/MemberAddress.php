@@ -23,7 +23,6 @@ class MemberAddress extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
-
     public function getProvinceAttribute()
     {
         //return (new RajaOngkirService())->getProvince($this->province_id);

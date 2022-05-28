@@ -34,21 +34,23 @@ class AuthService
         event(new Registered($user));
         $addressService = new MemberAddressService;
         $address = $addressService->registerNew($user, $request);
+
+        //Generate Member
+        if (!empty($request->birth_date) && !empty($request->gender)) {
+            $member = Member::create([
+                'user_id' => $user->id,
+                'first_name' => $user->name,
+                'birth_date' => $request->birth_date,
+                'gender' => $request->gender,
+            ]);
+        }
         DB::commit();
         Auth::attempt(['email' => $user->email, 'password' => $request['password']]);
 
-        if (!empty($request->birth_date)) {
-            $member = new Member();
-            $member->user_id = $user->id;
-            $member->first_name = $user->name;
-            $member->birth_date = $request->birth_date;
-            $member->gender = $request->gender;
-            $member->save();
-        }
-
         return [
             'user' => $user,
-            'address' => $address
+            'address' => $address,
+            'member' => $member
         ];
     }
 
