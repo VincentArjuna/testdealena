@@ -5,10 +5,7 @@ jobs:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
     steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v2
-    
-    - name: Deploy to server
+    - name: 🧑‍🔧Deploy to server 🚚
       uses: appleboy/ssh-action@master
       with:
         debug: true
@@ -16,4 +13,4 @@ jobs:
         username: ${{ secrets.USERNAME }}
         port: ${{ secrets.PORT }}
         key: ${{ secrets.SSHKEY }}
-        script: "cd laravel && git pull && composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader && php artisan clear-compiled && php artisan optimize"
+        script: "cd laravel && ./.scripts/deploy.sh"
