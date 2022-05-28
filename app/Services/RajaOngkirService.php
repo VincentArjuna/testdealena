@@ -77,12 +77,11 @@ class RajaOngkirService
 
         return $this->getLocation($params, $url);\
         */
-        return $id;
-        if (!empty($id)) {
+        if (empty($id)) {
             $province = Province::get();
             return $province;
         } else {
-            $province = Province::where('province_id', $id)->first();
+            $province = Province::find($id);
             return $province;
         }
     }
@@ -108,7 +107,7 @@ class RajaOngkirService
 
         return $this->getLocation($params, $url);
         */
-        if (!empty($id)) {
+        if (empty($id)) {
             $city = City::get();
             return $city;
         } else {
