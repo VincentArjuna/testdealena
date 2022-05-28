@@ -81,7 +81,7 @@ class RajaOngkirService
             $province = Province::get();
             return $province;
         } else {
-            $province = Province::find($id);
+            $province = Province::where('province_id', $id)->first();
             return $province;
         }
     }
@@ -111,7 +111,7 @@ class RajaOngkirService
             $city = City::get();
             return $city;
         } else {
-            $city = City::find($id);
+            $city = City::where('city_id', $id)->first();
             return $city;
         }
     }
