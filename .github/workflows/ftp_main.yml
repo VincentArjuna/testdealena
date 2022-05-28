@@ -11,6 +11,7 @@ jobs:
     - name: Deploy to server
       uses: appleboy/ssh-action@master
       with:
+        debug: true
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         port: ${{ secrets.PORT }}
