@@ -7,8 +7,7 @@ echo "Deployment started ..."
 (php artisan down --message 'The app is being (quickly!) updated. Please try again in a minute.') || true
 
 # Update codebase
-git fetch origin main
-git reset --hard origin/main
+git pull
 
 # Install composer dependencies
 composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
