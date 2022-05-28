@@ -10,7 +10,7 @@ echo "Deployment started ..."
 git pull
 
 # Install composer dependencies
-composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-progress
 
 # Clear the old cache
 php artisan clear-compiled
