@@ -1,6 +1,4 @@
 #!/bin/bash
-set -e
-
 echo "Deployment started ..."
 
 # Enter maintenance mode or return true
