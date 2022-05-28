@@ -15,6 +15,9 @@ jobs:
           extensions: mbstring, dom, fileinfo
           coverage: xdebug
           
+    - name: Git Pull
+      run: git pull
+
     - name: 🕹️ Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       
@@ -26,12 +29,3 @@ jobs:
       
     - name: 👮 Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
-    
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.3.0
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        protocol: ftps
-        port: ${{ secrets.FTP_PORT }}
