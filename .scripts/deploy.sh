@@ -1,12 +1,14 @@
 #!/bin/bash
+set -e
+
 echo "Deployment started ..."
 
-# Enter maintenance mode or return true
-# if already is in maintenance mode
-(php artisan down) || true
+# Enter maintenance mode
+(php artisan down --message 'The app is being (quickly!) updated. Please try again in a minute.') || true
 
-# Pull the latest version of the app
-git pull
+# Update codebase
+git fetch origin deploy
+git reset --hard origin/deploy
 
 # Install composer dependencies
 composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
