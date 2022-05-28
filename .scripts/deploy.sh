@@ -13,6 +13,9 @@ git reset --hard origin/main
 # Install composer dependencies
 composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-progress
 
+#Copy ENV
+php -r "file_exists('.env') || copy('.env.example', '.env');"
+
 # Clear the old cache
 php artisan clear-compiled
 
