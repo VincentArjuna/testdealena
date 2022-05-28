@@ -32,7 +32,10 @@ class StoreController extends Controller
                     : 'Sorry you haven\'t created a store!'
             ]);
         }
-        
+        return response()->json([
+            'user' => $user,
+            'message' => 'Sorry you haven\'t created a store!'
+        ]);
     }
 
     /**
