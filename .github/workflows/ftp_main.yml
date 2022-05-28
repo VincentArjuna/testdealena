@@ -26,3 +26,13 @@ jobs:
       
     - name: 👮 Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
+
+    - name: Deploy to server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        port: ${{ secrets.PORT }}
+        key: ${{ secrets.SSHKEY }}
+        script: "cd /laravel && ./.scripts/deploy.sh"
+
