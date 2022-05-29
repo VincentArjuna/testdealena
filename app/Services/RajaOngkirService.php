@@ -217,6 +217,10 @@ class RajaOngkirService
                 }
             }
         }
-        return collect($lists);
+        $collect = collect();
+        foreach ($lists as $list) {
+            $collect->push($list);
+        }
+        return $collect;
     }
 }
