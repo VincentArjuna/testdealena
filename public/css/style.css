@@ -1,0 +1,38 @@
+/* Body*/
+body{
+    background-color: #1100BB;
+}
+h1{
+    margin-top: 15%;
+    text-align: center;
+    font-size: 100px;
+    font-family: "amaranth";
+    color: #F8D832;
+}
+h2{
+    text-align: center;
+    font-size: 30px;
+    color: white;
+    margin-top: -30px;
+    font-family: "amaranth";
+    margin-bottom:30px;
+}
+
+img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+/* DESKTOP VERSION */
+@media screen and (max-width: 768px) {
+    .tulis1{
+        margin-top: 30%;
+        text-align: center;
+        font-size: 50px;
+        color:white;
+    }
+
+    .tulis2{
+        margin-top: -20px;
+    }
+}
