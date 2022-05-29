@@ -81,4 +81,16 @@ class LocationController extends Controller
 
         return response()->json($response);
     }
+
+    /**
+     * Get list available couriers from RajaOngkir
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getMemberCourier(Request $request)
+    {
+        $response = (new RajaOngkirService)->getMemberCourier($request);
+
+        return response()->json($response);
+    }
 }

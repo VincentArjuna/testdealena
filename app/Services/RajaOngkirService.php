@@ -172,4 +172,48 @@ class RajaOngkirService
             ['code' => 'jtl', 'label' => 'JTL']
         ]);
     }
+
+    /**
+     * Get list available couriers
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getMemberCourier($request)
+    {
+        $store = $request->user()->store;
+        $lists = [
+            ['code' => 'jne', 'label' => 'JNE', 'flag' => 0],
+            ['code' => 'pos', 'label' => 'POS', 'flag' => 0],
+            ['code' => 'tiki', 'label' => 'TIKI', 'flag' => 0],
+            ['code' => 'rpx', 'label' => 'RPX', 'flag' => 0],
+            ['code' => 'pandu', 'label' => 'PANDU', 'flag' => 0],
+            ['code' => 'wahana', 'label' => 'WAHANA', 'flag' => 0],
+            ['code' => 'sicepat', 'label' => 'SICEPAT', 'flag' => 0],
+            ['code' => 'jnt', 'label' => 'JNT', 'flag' => 0],
+            ['code' => 'pahala', 'label' => 'PAHALA', 'flag' => 0],
+            ['code' => 'sap', 'label' => 'SAP', 'flag' => 0],
+            ['code' => 'jet', 'label' => 'JET', 'flag' => 0],
+            ['code' => 'indah', 'label' => 'INDAH', 'flag' => 0],
+            ['code' => 'dse', 'label' => 'DSE', 'flag' => 0],
+            ['code' => 'slis', 'label' => 'SLIS', 'flag' => 0],
+            ['code' => 'first', 'label' => 'FIRST', 'flag' => 0],
+            ['code' => 'ncs', 'label' => 'NCS', 'flag' => 0],
+            ['code' => 'star', 'label' => 'STAR', 'flag' => 0],
+            ['code' => 'ninja', 'label' => 'NINJA'], 'flag' => 0,
+            ['code' => 'lion', 'label' => 'LION', 'flag' => 0],
+            ['code' => 'idl', 'label' => 'IDL', 'flag' => 0],
+            ['code' => 'rex', 'label' => 'REX', 'flag' => 0],
+            ['code' => 'ide', 'label' => 'IDE', 'flag' => 0],
+            ['code' => 'sentral', 'label' => 'SENTRAL', 'flag' => 0],
+            ['code' => 'anteraja', 'label' => 'ANTERAJA', 'flag' => 0],
+            ['code' => 'jtl', 'label' => 'JTL', 'flag' => 0]
+        ];
+        foreach ($lists as $key => $value ) {
+            $pos = strpos($store->couriers, $lists[$value]['code']);
+            if($pos != false){
+                $lists[$key]['flag'] = $pos;
+            }
+        }
+        return collect($lists);
+    }
 }
