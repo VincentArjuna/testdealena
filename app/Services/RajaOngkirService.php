@@ -209,7 +209,7 @@ class RajaOngkirService
             ['code' => 'jtl', 'label' => 'JTL', 'flag' => 0]
         ];
         foreach ($lists as $list) {
-            return $store->couriers;
+            return $store;
             $pos = strpos($store->couriers, $list['code']);
             if ($pos != false) {
                 $list['flag'] = $pos;
