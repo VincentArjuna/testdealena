@@ -28,10 +28,10 @@
     </div>
 
     <a href="https://www.google.com/">
-        <img src="img/appstore.png" alt="" width="150" height="60">
+        <img src={{ asset('images/appstore.png') }} alt="" width="150" height="60">
     </a>
     <a href="https://www.google.com/">
-        <img src="img/playstore.png" alt="" width="150" height="60">
+        <img src={{ asset('images/playstore.png') }} alt="" width="150" height="60">
     </a>
 </body>
 
