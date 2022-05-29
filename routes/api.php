@@ -66,7 +66,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/member/transaction', [App\Http\Controllers\API\Member\TransactionController::class, 'index']);
     Route::get('/member/transaction/detail/{id}', [App\Http\Controllers\API\Member\TransactionController::class, 'detail']);
     Route::post('/member/transaction/add-waybill_cost', [App\Http\Controllers\API\Member\TransactionController::class, 'addWayBillCost']);
-    Route::get('/member/get-courier', [App\Http\Controllers\API\Location\LocationController::class, 'getMemberCourier']);
+    
 
     //Midtrans
     Route::get('/midtrans/getToken/transaction/{transaction_id}', [App\Http\Controllers\API\Member\TransactionController::class, 'getToken']);
@@ -84,6 +84,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/store/view', [App\Http\Controllers\API\Store\StoreController::class, 'view']);
     Route::get('/store/view-products', [App\Http\Controllers\API\Store\StoreController::class, 'viewProducts']);
     Route::post('/store/update-couriers', [App\Http\Controllers\API\Store\StoreController::class, 'updateCouriers']);
+    Route::get('/store/get-courier', [App\Http\Controllers\API\Location\LocationController::class, 'getMemberCourier']);
 
     // Product routes
     Route::post('/product/store', [App\Http\Controllers\API\Product\ProductController::class, 'store']);
