@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+cp .env.example .env
+
 echo "Deployment started ..."
 
 # Enter maintenance mode
