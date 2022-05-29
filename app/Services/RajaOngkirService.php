@@ -208,10 +208,11 @@ class RajaOngkirService
             ['code' => 'anteraja', 'label' => 'ANTERAJA', 'flag' => 0],
             ['code' => 'jtl', 'label' => 'JTL', 'flag' => 0]
         ];
-        foreach ($lists as $key => $value ) {
-            $pos = strpos($store->couriers, $lists[$value]['code']);
-            if($pos != false){
-                $lists[$key]['flag'] = $pos;
+        foreach ($lists as $list) {
+            $code = strval($lists['code']);
+            $pos = strpos($store->couriers, $code);
+            if ($pos != false) {
+                $lists['flag'] = $pos;
             }
         }
         return collect($lists);
