@@ -83,7 +83,8 @@ class ProductController extends Controller
     public function store(ProductSubmitRequest $request, ProductService $service)
     {
         $image_props = ['images_front', 'images_back', 'images_left', 'images_right'];
-        return $request;
+        $requested = array_diff_key($request, array_flip($image_props));
+        return $requested;
         $user = $request->user();
         $store = $user->store;
         $product = $service->submit($request);
