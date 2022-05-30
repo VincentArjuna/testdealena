@@ -87,7 +87,7 @@ class ProductController extends Controller
             $image_props = ['images_front', 'images_back', 'images_left', 'images_right'];
             return collect($item)->except($image_props)->toArray();
         });
-        return $collect;
+        return $request;
         $user = $request->user();
         $store = $user->store;
         $product = $service->submit($request);
