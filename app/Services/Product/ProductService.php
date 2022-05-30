@@ -42,7 +42,7 @@ class ProductService
         $image_props = ['images_front', 'images_back', 'images_left', 'images_right'];
         $product->user_id = $user->id;
         $product->store_id = $store->id;
-        return $product;
+        return $request->except($image_props);
         $product = $this->renderProductFromRequest($request, $product);
         // Product image model setter
         $images = collect();
