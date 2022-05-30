@@ -82,6 +82,9 @@ class ProductController extends Controller
      */
     public function store(ProductSubmitRequest $request, ProductService $service)
     {
+        $image_props = ['images_front', 'images_back', 'images_left', 'images_right'];
+        $collect = collect($request)->except($image_props);
+        return $collect;
         $user = $request->user();
         $store = $user->store;
         $product = $service->submit($request);
