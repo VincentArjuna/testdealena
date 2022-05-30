@@ -17,7 +17,7 @@ class MemberAddress extends Model
 
     protected $guarded = ['id', 'created_at', 'updated_at', 'deleted_at'];
 
-    protected $appends = ['province', 'city'];
+    protected $appends = ['province', 'city', 'subdistrict'];
 
     public function user()
     {
@@ -36,7 +36,7 @@ class MemberAddress extends Model
         return City::where('city_id', $this->city_id)->first();
     }
 
-    public function getDistrictAttribute()
+    public function getSubDistrictAttribute()
     {
         //return (new RajaOngkirService())->getDistrict($this->city_id, $this->district_id);
         return Subdistrict::where('subdistrict_id', $this->subdistrict_id)->first();
