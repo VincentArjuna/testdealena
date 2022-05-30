@@ -19,9 +19,9 @@ class UploadService
     {
         $default_path = 'images/' . $path;
         $image = empty($file_name)
-            ? time() . '.' . $request->file($key)->extension()
+            ? time() . '-' . $key . '.' . $request->file($key)->extension()
             : $file_name;
-        $request->file($key)->move(public_path($default_path), $image);
+        $request->file($key)->move($default_path, $image);
 
         return $image;
     }
