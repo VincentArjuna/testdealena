@@ -33,7 +33,9 @@ class RegisterRequest extends FormRequest
             'password' => 'required|string|min:8',
             'province_id' => 'required|numeric',
             'city_id' => 'required|numeric',
-            'postal_code' => 'required|numeric'
+            'subdistrict_id' => 'required|numeric',
+            'postal_code' => 'required|numeric',
+            'address' => 'required|string',
         ];
     }
 
