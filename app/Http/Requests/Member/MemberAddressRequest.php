@@ -29,7 +29,9 @@ class MemberAddressRequest extends FormRequest
             'name' => 'required|string',
             'province_id' => 'required|numeric',
             'city_id' => 'required|numeric',
+            'subdistrict_id' => 'required|numeric',
             'postal_code' => 'required|numeric',
+            'address' => 'required|string',
             'is_default' => 'required'
         ];
     }

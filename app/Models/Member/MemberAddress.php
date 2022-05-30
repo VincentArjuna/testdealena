@@ -4,6 +4,7 @@ namespace App\Models\Member;
 
 use App\Models\Location\City;
 use App\Models\Location\Province;
+use App\Models\Location\Subdistrict;
 use App\Models\User;
 use App\Services\RajaOngkirService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,5 +39,6 @@ class MemberAddress extends Model
     public function getDistrictAttribute()
     {
         //return (new RajaOngkirService())->getDistrict($this->city_id, $this->district_id);
+        return Subdistrict::where('subdistrict_id', $this->subdistrict_id)->first();
     }
 }

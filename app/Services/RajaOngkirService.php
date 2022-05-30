@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Location\City;
 use App\Models\Location\Province;
+use App\Models\Location\Subdistrict;
 use Illuminate\Support\Facades\Http;
 
 class RajaOngkirService
@@ -125,16 +126,13 @@ class RajaOngkirService
      */
     public function getDistrict($city = null, $id = null)
     {
-        $params = [];
-        if (!empty($city)) {
-            $params['city'] = $city;
+        if (empty($id)) {
+            $subdistrict = Subdistrict::get();
+            return $subdistrict;
+        } else {
+            $subdistrict = Subdistrict::where('subdistrict_id', $id)->first();
+            return $subdistrict;
         }
-        if (!empty($id)) {
-            $params['id'] = $id;
-        }
-        $url = env('RAJAONGKIR_URL') . '/subdistrict';
-
-        return $this->getLocation($params, $url);
     }
 
     /**

@@ -40,8 +40,6 @@ class ProductService
         // Product model setter
         $request['min_deposit'] = empty($request['min_deposit']) ? 0 : $request['min_deposit'];
         $image_props = ['images_front', 'images_back', 'images_left', 'images_right'];
-        $collect = collect($request)->except($image_props);
-        return $collect;
 
         $product->user_id = $user->id;
         $product->store_id = $store->id;

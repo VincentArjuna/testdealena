@@ -26,7 +26,9 @@ class MemberAddressService
             'user_id' => $user->id,
             'province_id' => $request['province_id'],
             'city_id' => $request['city_id'],
+            'subdistrict_id' => $request['subdistrict_id'],
             'postal_code' => $request['postal_code'],
+            'address' => $request['address'],
             'lat' => $faker->latitude(),
             'long' => $faker->longitude(),
             'is_default' => '1'
@@ -48,9 +50,9 @@ class MemberAddressService
                 ->where('user_id', $user_id)
                 ->update(['is_default' => '0']);
         }
-        if ($request->has('id') && ! empty($request->id)) {
+        if ($request->has('id') && !empty($request->id)) {
             $address = MemberAddress::find($request->id);
-            if ($address->is_default && ! $request->is_default) {
+            if ($address->is_default && !$request->is_default) {
                 throw new HttpResponseException(
                     response()->json([
                         'message' => 'No default address specified!',
@@ -63,7 +65,7 @@ class MemberAddressService
         }
         $address->user_id = $user_id;
         foreach ($request->all() as $key => $value) {
-            if ($request->has($key) && ! empty($value)) {
+            if ($request->has($key) && !empty($value)) {
                 $address->{$key} = $value;
             }
         }
