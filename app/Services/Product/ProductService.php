@@ -43,7 +43,7 @@ class ProductService
         $product->user_id = $user->id;
         $product->store_id = $store->id;
         $product = $this->renderProductFromRequest($request, $product);
-
+        return $product;
         // Product image model setter
         $images = collect();
         $uploadService = new UploadService();
