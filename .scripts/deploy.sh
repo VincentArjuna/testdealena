@@ -11,7 +11,7 @@ echo "Deployment started ..."
 
 # Update codebase
 git fetch
-git reset --hard origin/main
+git reset --hard origin/production
 
 # Install composer dependencies
 composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-progress
