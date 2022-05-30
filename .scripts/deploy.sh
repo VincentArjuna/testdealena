@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e
 
-cp .env.example .env
+#Copy Env file
+#cp .env.example .env
 
 echo "Deployment started ..."
 
@@ -14,6 +15,9 @@ git reset --hard origin/main
 
 # Install composer dependencies
 composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-progress
+
+#Generate APP key
+#php artisan key:generate
 
 # Clear the old cache
 php artisan clear-compiled

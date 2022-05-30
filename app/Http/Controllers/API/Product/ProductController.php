@@ -137,6 +137,8 @@ class ProductController extends Controller
     {
         $response['status'] = true;
         $response['message'] = 'Successfully submit bid';
+        $image_props = ['images_front', 'images_back', 'images_left', 'images_right'];
+        return $request->except($image_props);
         $response['data'] = (new ProductService)->submitBid($request);
 
         return response()->json($response);
