@@ -40,8 +40,6 @@ class ProductService
         // Product model setter
         $request['min_deposit'] = empty($request['min_deposit']) ? 0 : $request['min_deposit'];
         $image_props = ['images_front', 'images_back', 'images_left', 'images_right'];
-
-        return ($request->except(['images_front', 'images_back', 'images_left', 'images_right']));
         $product->user_id = $user->id;
         $product->store_id = $store->id;
         $product = $this->renderProductFromRequest($request, $product);
@@ -75,26 +73,49 @@ class ProductService
      */
     public function renderProductFromRequest(Request $request, Product $product)
     {
-        $image_props = ['images_front', 'images_back', 'images_left', 'images_right'];
-        foreach ($request->except($image_props) as $key => $value) {
-            if (in_array($key, ['bid_start', 'bid_end', 'bid_end_range'])) {
-                if (
-                    $key == 'bid_start' && $request->filled('bid_start') ||
-                    $key == 'bid_end' && $request->filled('bid_end')
-                ) {
-                    $product->{$key} = Date::parse($value)->format('Y-m-d H:i:s');
-                }
-                if ($key == 'bid_end_range' && $request->filled('bid_end_range')) {
-                    $product->{$key} = $value;
-                    $product->bid_end = Date::parse($request->bid_start)
-                        ->addDays($request->bid_end_range)
-                        ->format('Y-m-d H:i:s');
-                }
-            } else {
-                $product->{$key} = $value;
-            }
+        $product->name = $request->name;
+        $product->product_category_id = $request->product_category_id;
+       
+        if ($request->filled('description')) {
+            $product->description = $request->description;
         }
 
+        $product->weight = $request->weight;
+        if ($request->filled('length')) {
+            $product->length = $request->length;
+        }
+        if ($request->filled('width')) {
+            $product->width = $request->width;
+        }
+        if ($request->filled('height')) {
+            $product->height = $request->height;
+        }
+        $product->start_bid = $request->start_bid;
+        $product->bid_multiplier = $request->bid_multiplier;
+
+        if ($request->filled('bid_start')) {
+            $product->bid_start = Date::parse($request->bid_start)->format('Y-m-d H:i:s');
+        }
+        if ($request->filled('bid_end')) {
+            $product->bid_end = Date::parse($request->bid_end)->format('Y-m-d H:i:s');
+        }
+        if ($request->filled('bid_end_range')) {
+            $product->bid_end_range = $request->bid_end_range;
+            $product->bid_end = Date::parse($request->bid_start)
+                ->addDays($request->bid_end_range)
+                ->format('Y-m-d H:i:s');
+        }
+
+        $product->bid_bin = $request->bid_bin;
+        $product->min_deposit = $request->min_deposit;
+        $product->qty = $request->qty;
+        if ($request->filled('condition')) {
+            $product->condition = $request->condition;
+        }
+        if ($request->filled('quality')) {
+            $product->quality = $request->quality;
+        }
+        
         return $product;
     }
 
