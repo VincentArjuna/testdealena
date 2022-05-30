@@ -75,7 +75,7 @@ class ProductService
     public function renderProductFromRequest(Request $request, Product $product)
     {
         $image_props = ['images_front', 'images_back', 'images_left', 'images_right'];
-        dd($request->skip($image_props));
+        dd($request->except(['images_front', 'images_back', 'images_left', 'images_right']));
         foreach ($request->except($image_props) as $key => $value) {
             if (in_array($key, ['bid_start', 'bid_end', 'bid_end_range'])) {
                 if (
