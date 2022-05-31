@@ -26,8 +26,8 @@ class ProfileController extends Controller
     {
         $user = $request->user();
         $response['user'] = $user;
-        $response['addresses'] = $user->addresses;
-        if (! empty($user->member)) {
+        //$response['addresses'] = $user->addresses;
+        if (!empty($user->member)) {
             $response['member'] = $user->member;
         }
 
@@ -45,7 +45,7 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        if (! empty($user->member)) {
+        if (!empty($user->member)) {
             $member = $user->member;
         } else {
             $member = new Member();
@@ -112,7 +112,7 @@ class ProfileController extends Controller
 
             throw new HttpResponseException(response()->json($response, 422));
         }
-        if (! empty($member->pin) && $member->pin == $request->pin) {
+        if (!empty($member->pin) && $member->pin == $request->pin) {
             $response['status'] = true;
             $response['message'] = 'PIN is valid!';
         } else {

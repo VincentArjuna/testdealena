@@ -19,7 +19,7 @@ class StoreService
     public function submit(Request $request)
     {
         $user = $request->user();
-        if (! empty($user->store)) {
+        if (!empty($user->store)) {
             $store = Store::find($user->store->id);
         } else {
             $store = new Store();
@@ -63,10 +63,7 @@ class StoreService
 
                 throw new HttpResponseException(response()->json($response, 422));
             }
-            $rendered_value = ! empty($store->couriers)
-                ? $store->couriers->merge($couriers)
-                    ->unique()->values()
-                : $couriers;
+            $rendered_value = $couriers;
         } else {
             $rendered_value = $value;
         }
@@ -84,7 +81,7 @@ class StoreService
     {
         $slug = Str::slug($name);
         $same = Store::query()->whereSlug($slug)->first();
-        if (! empty($same)) {
+        if (!empty($same)) {
             $increment = end(explode('-', $same->slug)) + 1;
             $slug .= '-' . $increment;
         }
