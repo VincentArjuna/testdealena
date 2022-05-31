@@ -180,6 +180,8 @@ class ProductService
         $product = Product::find($request->product_id);
         if ($request->bid_value == $product->bid_bin) {
             $product->bid_end = now();
+            $product->winner_id = $request->user()->id;
+            $product->is_show = 0;
             $product->save();
 
             //Create Transaction
