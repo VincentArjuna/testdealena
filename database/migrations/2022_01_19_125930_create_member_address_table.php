@@ -22,8 +22,8 @@ class CreateMemberAddressTable extends Migration
             $table->bigInteger('subdistrict_id');
             $table->bigInteger('postal_code');
             $table->text('address');
-            $table->decimal('lat', 10, 8);
-            $table->decimal('long', 11, 8);
+            $table->decimal('lat', 10, 8)->nullable();
+            $table->decimal('long', 11, 8)->nullable();
             $table->text('description')->nullable();
             $table->text('notes')->nullable();
             $table->char('is_default', 1)->default('0');
