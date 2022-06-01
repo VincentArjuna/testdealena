@@ -79,12 +79,11 @@ class MemberAddressService
         try {
             $address = MemberAddress::find($id);
             if ($address->is_default == 1) {
-                $new_default = MemberAddress::get()->first();
-                $new_default->is_default = 1;
-                $new_default->save();
+                $default = MemberAddress::get()->first();
+                $default->is_default = 1;
+                $default->save();
             }
             MemberAddress::destroy($id);
-            return $new_default;
         } catch (\Throwable $th) {
             throw new HttpResponseException(
                 response()->json([
