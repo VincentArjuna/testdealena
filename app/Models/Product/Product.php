@@ -7,10 +7,11 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Mehradsadeghi\FilterQueryString\FilterQueryString;
 
 class Product extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, FilterQueryString;
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
@@ -27,6 +28,13 @@ class Product extends Model
         'bid_start' => 'datetime',
         'bid_end' => 'datetime',
         'deleted_at' => 'datetime',
+    ];
+
+    protected $filters = [
+        'greater_or_equal',
+        'less_or_equal',
+        'between',
+        'product_category_id'
     ];
 
     protected $appends = ['remaining_times', 'placeholder_images'];

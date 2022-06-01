@@ -34,11 +34,10 @@ class ProductSubmitRequest extends FormRequest
             'bid_start' => 'required|date_format:d-m-Y H:i:s',
             'bid_end' => 'date_format:d-m-Y H:i:s',
             'qty' => 'required|numeric',
-            'images_front' => 'image|mimes:jpeg,png,jpg,gif,svg',
-            'images_back' => 'image|mimes:jpeg,png,jpg,gif,svg',
-            'images_left' => 'image|mimes:jpeg,png,jpg,gif,svg',
-            'images_right' => 'image|mimes:jpeg,png,jpg,gif,svg',
-            'min_deposit' => 'required|numeric',
+            'images_front' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2000',
+            'images_back' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2000',
+            'images_left' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2000',
+            'images_right' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2000',
             'bid_bin' => 'required|numeric'
         ];
     }
@@ -50,7 +49,14 @@ class ProductSubmitRequest extends FormRequest
      */
     public function messages()
     {
-        return [];
+        return [
+            'required' => 'A :attribute is required',
+            'string' => 'A :attribute must be a string',
+            'max' => ':attribute field must not exceed :max',
+            'min' => ':attribute field must have minimun :min length',
+            'unique' => ':attribute has been taken',
+            'numeric' => ':attribute must be a number'
+        ];
     }
 
     /**

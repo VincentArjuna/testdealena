@@ -61,11 +61,11 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showAll()
+    public function showAll(Request $request)
     {
-        $products = Product::query()
-            ->where('bid_start', '<=', now())
+        $products = Product::where('bid_start', '<=', now())
             ->where('bid_end', '>=', now())
+            ->filter()
             ->paginate(10);
 
         return response()->json([

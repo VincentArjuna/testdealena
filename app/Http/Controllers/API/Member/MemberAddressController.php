@@ -59,4 +59,15 @@ class MemberAddressController extends Controller
             'message' => 'Successfully Submit Member Address'
         ]);
     }
+
+    public function delete($id, MemberAddressService $service)
+    {
+        $new_default = $service->delete($id);
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'Successfully Delete Member Address',
+            'new_default_address' => $new_default
+        ]);
+    }
 }
