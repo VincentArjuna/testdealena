@@ -75,7 +75,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/member/addresses', [App\Http\Controllers\API\Member\MemberAddressController::class, 'index']);
     Route::get('/member/address/{id}', [App\Http\Controllers\API\Member\MemberAddressController::class, 'show']);
     Route::post('/member/address/store', [App\Http\Controllers\API\Member\MemberAddressController::class, 'store']);
-    
+    Route::get('/member/address/delete/{id}', [App\Http\Controllers\API\Member\MemberAddressController::class, 'delete']);
+
     // Store routes
     Route::get('/store', [App\Http\Controllers\API\Store\StoreController::class, 'index']);
     Route::post('/store/create', [App\Http\Controllers\API\Store\StoreController::class, 'store']);

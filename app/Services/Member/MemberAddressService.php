@@ -73,4 +73,25 @@ class MemberAddressService
 
         return $address;
     }
+
+    public function delete($id)
+    {
+        try {
+            $address = MemberAddress::find($id);
+            if ($address->is_default == 1) {
+                $new_default = MemberAddress::get()->first();
+                $new_default->is_default = 1;
+                $new_default->save();
+            }
+            MemberAddress::destroy($id);
+            return $new_default;
+        } catch (\Throwable $th) {
+            throw new HttpResponseException(
+                response()->json([
+                    'message' => 'No Address Found',
+                    'status' => false
+                ], 422)
+            );
+        }
+    }
 }
