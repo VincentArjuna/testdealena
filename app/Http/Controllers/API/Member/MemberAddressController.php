@@ -62,12 +62,11 @@ class MemberAddressController extends Controller
 
     public function delete($id, MemberAddressService $service)
     {
-        $new_default = $service->delete($id);
+        $service->delete($id);
 
         return response()->json([
             'code' => 200,
-            'message' => 'Successfully Delete Member Address',
-            'new_default_address' => $new_default
+            'message' => 'Successfully Delete Member Address'
         ]);
     }
 }
