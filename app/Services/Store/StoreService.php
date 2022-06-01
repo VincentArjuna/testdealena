@@ -80,9 +80,9 @@ class StoreService
     public function generateSlug($name)
     {
         $slug = Str::slug($name);
-        $same = Store::query()->whereSlug($slug)->first();
-        if (!empty($same)) {
-            $increment = end(explode('-', $same->slug)) + 1;
+        $same = Store::where('slug', $slug)->get();
+        if ($same->count() > 0) {
+            $increment = $same->count() + 1;
             $slug .= '-' . $increment;
         }
 
