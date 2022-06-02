@@ -4,9 +4,8 @@ namespace App\Http\Controllers\API\Midtrans;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product\Transaction;
-use App\Services\Midtrans\CallbackService;
 use App\Services\Midtrans\CreateSnapTokenService;
-use Illuminate\Http\Request;
+use Midtrans\Config;
 
 class MidtransController extends Controller
 {
@@ -27,8 +26,35 @@ class MidtransController extends Controller
         ]);
     }
 
-    public function checkPayment(Request $request, CallbackService $notification)
+    public function checkPayment()
     {
-        $notification->paymentNotification($request);
+        $notif = new \Midtrans\Notification();
+
+        $transaction = $notif->transaction_status;
+        $fraud = $notif->fraud_status;
+        $input = $notif->order_id . $notif->status_code . $notif->grossAmount . Config::$serverKey;
+        $signature = openssl_digest($input, 'sha512');
+        if ($signature == $notif->signature_key) {
+            if ($transaction == 'settlement') {
+                // TODO Set payment status in merchant's database to 'accepted'
+                $transaction = Transaction::where('payment_id', $notif->order_id)->first();
+                $transaction->status = 'processed';
+                $transaction->save();
+            } else if ($transaction == 'capture') {
+                if ($fraud == 'challenge') {
+                    // TODO Set payment status in merchant's database to 'challenge'
+                } else if ($fraud == 'accept') {
+                    // TODO Set payment status in merchant's database to 'success'
+                }
+            } else if ($transaction == 'cancel') {
+                if ($fraud == 'challenge') {
+                    // TODO Set payment status in merchant's database to 'failure'
+                } else if ($fraud == 'accept') {
+                    // TODO Set payment status in merchant's database to 'failure'
+                }
+            } else if ($transaction == 'deny') {
+                // TODO Set payment status in merchant's database to 'failure'
+            }
+        }
     }
 }

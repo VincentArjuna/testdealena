@@ -52,6 +52,9 @@ Route::name('product-category')->group(function () {
 Route::get('/product/show-all', [App\Http\Controllers\API\Product\ProductController::class, 'showAll']);
 Route::get('/product/show', [App\Http\Controllers\API\Product\ProductController::class, 'show']);
 
+//Midtrans Notification
+Route::post('/midtrans/payment-notification', [App\Http\Controllers\API\Midtrans\MidtransController::class, 'checkPayment']);
+
 // Auth access routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // User routes
@@ -70,7 +73,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     //Midtrans
     Route::get('/midtrans/getToken/transaction/{transaction_id}', [App\Http\Controllers\API\Midtrans\MidtransController::class, 'getToken']);
-    Route::post('/midtrans/payment-notification', [App\Http\Controllers\API\Midtrans\MidtransController::class, 'checkPayment']);
 
     // Member address routes
     Route::get('/member/addresses', [App\Http\Controllers\API\Member\MemberAddressController::class, 'index']);
