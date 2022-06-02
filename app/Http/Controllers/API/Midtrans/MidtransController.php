@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Midtrans;
 use App\Http\Controllers\Controller;
 use App\Models\Product\Transaction;
 use App\Services\Midtrans\CreateSnapTokenService;
+use App\Services\Midtrans\Midtrans;
 use Midtrans\Config;
 
 class MidtransController extends Controller
@@ -28,11 +29,12 @@ class MidtransController extends Controller
 
     public function checkPayment()
     {
+        $midtrans = new Midtrans;
         $notif = new \Midtrans\Notification();
 
         $transaction = $notif->transaction_status;
         $fraud = $notif->fraud_status;
-        $input = $notif->order_id . $notif->status_code . $notif->grossAmount . Config::$serverKey;
+        $input = $notif->order_id . $notif->status_code . $notif->gross_amount . Config::$serverKey;
         $signature = openssl_digest($input, 'sha512');
         if ($signature == $notif->signature_key) {
             if ($transaction == 'settlement') {
