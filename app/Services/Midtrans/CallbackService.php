@@ -3,6 +3,7 @@
 namespace App\Services\Midtrans;
 
 use App\Models\Product\Transaction;
+use Illuminate\Http\Request;
 use Midtrans\Config;
 
 class CallbackService extends Midtrans
@@ -15,9 +16,9 @@ class CallbackService extends Midtrans
         $this->serverKey = Config::$serverKey;
     }
 
-    public function paymentNotification()
+    public function paymentNotification(Request $request)
     {
-        $notif = new \Midtrans\Notification();
+        $notif = new \Midtrans\Notification($request);
 
         $transaction = $notif->transaction_status;
         $fraud = $notif->fraud_status;

@@ -10,10 +10,10 @@ class CreateSnapTokenService extends Midtrans
 {
     protected $transaction;
 
-    public function __construct($transaction)
+    public function __construct($transaction_id)
     {
         parent::__construct();
-
+        $transaction = Transaction::find($transaction_id);
         $this->transaction = $transaction;
     }
 
