@@ -7,7 +7,8 @@ set -e
 echo "Deployment started ..."
 
 # Enter maintenance mode
-(php artisan down --message 'The app is being (quickly!) updated. Please try again in a minute.') || true
+echo "The app is being (quickly!) updated. Please try again in a minute."
+(php artisan down ) || true
 
 # Update codebase
 git fetch
@@ -26,7 +27,7 @@ php artisan clear-compiled
 php artisan optimize
 
 # Run database migrations
-#php artisan migrate --force
+php artisan migrate --force
 
 # Exit maintenance mode
 php artisan up

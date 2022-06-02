@@ -110,12 +110,12 @@ class ProductService
             $request->toArray(),
             [
                 'bid_value' => 'required|numeric',
-                'bin_value' => 'numeric'
+                'product_id' => 'required|numeric',
             ],
             [],
             [
-                'bid_value' => 'Bid Value',
-                'bin_value' => 'BIN Value',
+                'product_id' => 'Product Id',
+                'bid_value' => 'Bid Value'
             ]
         );
         if ($validation->fails()) {
@@ -158,7 +158,7 @@ class ProductService
             $model->product_id = $request->product_id;
             $model->member_id = $request->user()->member->id;
             $model->bid_value = $request->bid_value;
-            $model->deposit_value = $request->deposit_value;
+            $model->deposit_value = empty($request->deposit_value) ? 0 : $request->deposit_value;
             $model->save();
         } else {
 
