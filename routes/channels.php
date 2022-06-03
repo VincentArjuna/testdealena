@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Chat\Conversation;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -13,6 +14,11 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('conversations.{conversation_id}', function ($user, $conversation_id) {
+    $conversation = Conversation::find($conversation_id);
+    if($conversation->user_one == $user->id || $conversation->user_two){
+        return true;
+    }else{
+        return false;
+    }
 });

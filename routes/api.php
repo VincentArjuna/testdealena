@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+//Chat Broadcast Auth
+Broadcast::routes(['middleware' => ['auth:sanctum']]);
 
 // Default Routes
 Route::get('/index', [App\Http\Controllers\API\AuthController::class, 'index'])->name('api');
@@ -57,6 +59,11 @@ Route::post('/midtrans/payment-notification', [App\Http\Controllers\API\Midtrans
 
 // Auth access routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
+
+    //Chat
+    Route::get('/conversation/{user_two}', [App\Http\Controllers\API\Chat\ConversationsController::class, 'show']);
+    Route::post('/conversation/{conversation}/message', [App\Http\Controllers\API\Chat\ConversationsController::class, 'store']);
+
     // User routes
     Route::get('/user/my-profile', [App\Http\Controllers\API\User\ProfileController::class, 'index']);
     Route::post('/user/my-profile/store', [App\Http\Controllers\API\User\ProfileController::class, 'store']);

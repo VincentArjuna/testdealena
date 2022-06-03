@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "beyondcode/laravel-websockets": "^1.13",
         "doctrine/dbal": "^2.13.3|^3.1.4",
         "fakerphp/faker": "^1.9.1",
         "fruitcake/laravel-cors": "^2.0",
@@ -16,7 +17,8 @@
         "laravel/tinker": "^2.5",
         "mehradsadeghi/laravel-filter-querystring": "^1.1",
         "midtrans/midtrans-php": "^2.5",
-        "orangehill/iseed": "^3.0"
+        "orangehill/iseed": "^3.0",
+        "pusher/pusher-php-server": "^7.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.11",
