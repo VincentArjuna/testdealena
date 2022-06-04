@@ -19,16 +19,13 @@ class ProductCategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = ProductCategory::query()
-            ->with('children');
+        $categories = ProductCategory::query();
 
-        if ($request->has('id') && ! empty($request->id)) {
+        if ($request->has('id') && !empty($request->id)) {
             $categories = $categories->whereId($request->id)
                 ->first();
         } else {
-            $categories = $categories->whereIsActive(true)
-                ->whereNull('parent_id')
-                ->get();
+            $categories = $categories->get();
         }
 
         return response()->json(compact('categories'));

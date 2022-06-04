@@ -4,6 +4,7 @@ namespace App\Models\Product;
 
 use App\Models\Store\Store;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -31,13 +32,17 @@ class Product extends Model
     ];
 
     protected $filters = [
-        'greater_or_equal',
-        'less_or_equal',
         'between',
-        'product_category_id'
+        'product_category_id',
+        'hot_product',
+        'best_product',
+        'last_second',
+        'by_bid'
     ];
 
     protected $appends = ['remaining_times', 'placeholder_images'];
+
+    //Extra Attributes 
 
     public function getRemainingTimesAttribute()
     {
@@ -83,6 +88,8 @@ class Product extends Model
             ->first();
     }
 
+    //Relation 
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
@@ -108,5 +115,39 @@ class Product extends Model
     public function bidders()
     {
         return $this->hasMany(ProductBidder::class, 'product_id', 'id');
+    }
+
+    //Filters
+    public function best_product($query, $value)
+    {
+
+        //$query->
+    }
+
+    public function hot_product($query, $value)
+    {
+        if ($value) {
+            return $query->with('bidders')->sortBy(function ($bidder) {
+                return $bidder->count();
+            });
+        }
+    }
+
+    public function last_second($query, $value)
+    {
+        if ($value) {
+            $minus = Carbon::now()->subHour();
+            $plus = Carbon::now()->addHour();
+            return $query->whereBetween('bid_end', [$minus, $plus]);
+        }
+    }
+
+    public function by_bid($query, $value)
+    {
+        $exploded = explode(',', $value);
+        $field = array_shift($exploded);
+        return $query->with('bidders')->sortBy(function ($bidder) use ($field, $exploded) {
+            return $bidder->whereBetween($field, $exploded);
+        });
     }
 }
