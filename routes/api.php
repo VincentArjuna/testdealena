@@ -73,6 +73,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/member/check-pin', [App\Http\Controllers\API\User\ProfileController::class, 'checkPin']);
     Route::post('/member/change-pin', [App\Http\Controllers\API\User\ProfileController::class, 'changePin']);
     Route::get('/member/followed-stores', [App\Http\Controllers\API\User\ProfileController::class, 'followedStores']);
+    Route::post('/member/followed-stores/update', [App\Http\Controllers\API\User\ProfileController::class, 'updateFollowedStores']);
     Route::get('/member/transaction', [App\Http\Controllers\API\Member\TransactionController::class, 'index']);
     Route::get('/member/transaction/detail/{id}', [App\Http\Controllers\API\Member\TransactionController::class, 'detail']);
     Route::post('/member/transaction/add-waybill_cost', [App\Http\Controllers\API\Member\TransactionController::class, 'addWayBillCost']);

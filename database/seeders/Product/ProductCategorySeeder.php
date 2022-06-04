@@ -15,7 +15,7 @@ class ProductCategorySeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        DB::table('users')->insert(
+        DB::table('product_categories')->insert(
             [
                 'name' => 'Elektronik',
                 'description' => $faker->text()

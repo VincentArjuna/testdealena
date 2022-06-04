@@ -67,9 +67,12 @@ class StoreController extends Controller
     public function generateSlug(Request $request, StoreService $service)
     {
         $response['status'] = true;
-        $response['slug'] = $request->user()->store->name !== $request->name
-            ? $service->generateSlug($request->name) : $request->user()->store->slug;
-
+        if (!empty($request->user()->store->name)) {
+            $response['slug'] = $request->user()->store->name !== $request->name
+                ? $service->generateSlug($request->name) : $request->user()->store->slug;
+        } else {
+            $response['slug'] =  $service->generateSlug($request->name);
+        }
         return response()->json($response);
     }
 

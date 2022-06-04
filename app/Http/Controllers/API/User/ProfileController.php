@@ -183,4 +183,38 @@ class ProfileController extends Controller
             'message' => 'Successfully get followed stores!'
         ]);
     }
+
+    public function updateFollowedStores(Request $request)
+    {
+        $follow = $request->follow;
+        if ($request->store_id != $request->user()->store->id) {
+            if ($follow == 1) {
+                FollowedStore::firstOrCreate(
+                    ['member_id' => $request->user()->member->id, 'store_id' => $request->store_id],
+                    ['member_id' => $request->user()->member->id, 'store_id' => $request->store_id]
+                );
+                return response()->json([
+                    'code' => 201,
+                    'message' => 'Successfully get followed stores!'
+                ]);
+            } else if ($follow == 0) {
+                try {
+                    FollowedStore::where('member_id', $request->user()->member->id)
+                        ->where('store_id', $request->store_id)
+                        ->delete();
+                } catch (\Throwable $th) {
+                    throw new HttpResponseException(response()->json($th, 422));
+                }
+
+                return response()->json([
+                    'code' => 202,
+                    'message' => 'Successfully Remove followed stores!'
+                ]);
+            }
+            $response['status'] = 'Follow need to be 0 or 1';
+            throw new HttpResponseException(response()->json($response, 422));
+        }
+        $response['status'] = 'Unable to follow your own store';
+        throw new HttpResponseException(response()->json($response, 422));
+    }
 }

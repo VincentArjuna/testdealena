@@ -4,10 +4,11 @@ namespace App\Models\Product;
 
 use App\Models\Store\Store;
 use App\Models\User;
-use Carbon\Carbon;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Mehradsadeghi\FilterQueryString\FilterQueryString;
 
 class Product extends Model
@@ -42,7 +43,7 @@ class Product extends Model
 
     protected $appends = ['remaining_times', 'placeholder_images'];
 
-    //Extra Attributes 
+    //Extra Attributes
 
     public function getRemainingTimesAttribute()
     {
@@ -88,7 +89,7 @@ class Product extends Model
             ->first();
     }
 
-    //Relation 
+    //Relation
 
     public function user()
     {
@@ -127,9 +128,7 @@ class Product extends Model
     public function hot_product($query, $value)
     {
         if ($value) {
-            return $query->with('bidders')->sortBy(function ($bidder) {
-                return $bidder->count();
-            });
+            return $query->withCount('bidders')->orderBy('bidders_count', 'desc');
         }
     }
 
@@ -146,8 +145,9 @@ class Product extends Model
     {
         $exploded = explode(',', $value);
         $field = array_shift($exploded);
-        return $query->with('bidders')->sortBy(function ($bidder) use ($field, $exploded) {
-            return $bidder->whereBetween($field, $exploded);
-        });
+        return $query
+            ->join('product_bidders', 'products.id', '=', 'product_bidders.product_id')
+            ->where('product_bidders.bid_value', '>=', $exploded[0])
+            ->where('product_bidders.bid_value', '<=', $exploded[1]);
     }
 }
