@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Mehradsadeghi\FilterQueryString\FilterQueryString;
 
 class Product extends Model
@@ -143,11 +144,18 @@ class Product extends Model
 
     public function by_bid($query, $value)
     {
+        
         $exploded = explode(',', $value);
-        $field = array_shift($exploded);
-        return $query
-            ->join('product_bidders', 'products.id', '=', 'product_bidders.product_id')
-            ->where('product_bidders.bid_value', '>=', $exploded[0])
-            ->where('product_bidders.bid_value', '<=', $exploded[1]);
+        $max_bid = ProductBidder::query()
+            ->select(DB::raw('MAX(product_bidders.bid_value) as max_bid, product_bidders.product_id'))
+            ->groupBy('product_bidders.product_id')
+            ->get();
+        $product_ids = [];
+        foreach ($max_bid as $bid) {
+            if($bid->max_bid >= $exploded[0] && $bid->max_bid <= $exploded[1]){
+                array_push($product_ids,$bid->product_id);
+            }
+        }
+        return $query->whereIn('id', $product_ids);
     }
 }
