@@ -3,6 +3,7 @@
 namespace App\Models\Member;
 
 use App\Models\Product\Transaction;
+use App\Models\Product\Wishlist;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -46,4 +47,8 @@ class Member extends Model
         return $this->hasMany(Transaction::class, 'member_id', 'id');
     }
 
+    public function wishlist()
+    {
+        return $this->hasMany(Wishlist::class, 'member_id', 'id');
+    }
 }

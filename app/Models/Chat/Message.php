@@ -11,6 +11,8 @@ class Message extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id', 'created_at', 'updated_at'];
+
     protected $fillable = [
         'conversation_id',
         'body',

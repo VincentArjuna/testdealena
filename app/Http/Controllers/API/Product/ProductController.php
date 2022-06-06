@@ -5,11 +5,9 @@ namespace App\Http\Controllers\API\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ProductSubmitRequest;
 use App\Models\Product\Product;
-use App\Models\Product\ProductBidder;
 use App\Services\Product\ProductService;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -69,7 +67,7 @@ class ProductController extends Controller
             ->where('bid_end', '>=', now())
             ->filter()
             ->paginate(10);
-        
+
         return response()->json([
             'products' => $products
         ]);

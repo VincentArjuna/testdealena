@@ -9,6 +9,9 @@ use App\Models\Chat\Message;
 class Conversation extends Model
 {
     use HasFactory;
+    
+    protected $guarded = ['id', 'created_at', 'updated_at'];
+
 
     protected $fillable = [
         'user_one',

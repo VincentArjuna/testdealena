@@ -102,6 +102,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/product/store', [App\Http\Controllers\API\Product\ProductController::class, 'store']);
     Route::get('/product/filter', [App\Http\Controllers\API\Product\ProductController::class, 'filter']);
     Route::post('/product/bid/submit', [App\Http\Controllers\API\Product\ProductController::class, 'submitBid']);
+    Route::post('/product/wishlist', [App\Http\Controllers\API\Product\WishlistController::class, 'updateWishlist']);
 
     // RajaOngkir routes
     Route::get('/delivery/cost', [App\Http\Controllers\API\Location\LocationController::class, 'getCost']);
