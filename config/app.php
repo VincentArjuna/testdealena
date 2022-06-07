@@ -3,6 +3,12 @@
 return [
 
     /*
+    | Raja Ongkir config
+    */
+    'rajaongkir_key' => env('RAJAONGKIR_KEY'),
+    'rajaongkir_url' => env('RAJAONGKIR_URL'),
+
+    /*
     |--------------------------------------------------------------------------
     | Application Name
     |--------------------------------------------------------------------------

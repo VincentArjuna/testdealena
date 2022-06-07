@@ -45,6 +45,12 @@ class CreateSnapTokenService extends Midtrans
                     'price' => $this->transaction->waybill_cost,
                     'quantity' => 1,
                     'name' => 'Ongkos Kirim',
+                ],
+                [
+                    'id' => 3,
+                    'price' => 10000,
+                    'quantity' => 1,
+                    'name' => 'Biaya Admin',
                 ]
             ],
             'customer_details' => [

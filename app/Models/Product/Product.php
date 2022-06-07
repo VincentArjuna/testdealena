@@ -124,6 +124,12 @@ class Product extends Model
         return $this->hasMany(Wishlist::class, 'product_id', 'id');
     }
 
+    public function memberWishlist($member_id)
+    {
+        return $this->hasMany(Wishlist::class, 'product_id', 'id')
+            ->where('member_id', $member_id)->first();
+    }
+
     //Filters
     public function best_product($query, $value)
     {

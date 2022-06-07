@@ -17,7 +17,7 @@ class RajaOngkirService
     public function setHeader()
     {
         return Http::withHeaders([
-            'key' => env('RAJAONGKIR_KEY')
+            'key' => config('app.rajaongkir_key')
         ]);
     }
 
@@ -49,7 +49,7 @@ class RajaOngkirService
      */
     public function getCost($params)
     {
-        $url = env('RAJAONGKIR_URL') . '/cost';
+        $url = config('app.rajaongkir_url') . '/cost';
         $request = $this->setHeader()->post($url, $params);
         $response = $request->collect()->toArray();
         if ($request->status() == 200) {

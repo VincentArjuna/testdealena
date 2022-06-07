@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ProductSubmitRequest;
+use App\Models\Member\Member;
 use App\Models\Product\Product;
 use App\Services\Product\ProductService;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -67,7 +68,16 @@ class ProductController extends Controller
             ->where('bid_end', '>=', now())
             ->filter()
             ->paginate(10);
-
+        if ($request->member) {
+            $member = Member::find($request->member);
+            $products->each(function ($product) use ($member) {
+                if ($product->memberWishlist($member->id)) {
+                    $product->wishlist = true;
+                } else {
+                    $product->wishlist = false;
+                }
+            });
+        }
         return response()->json([
             'products' => $products
         ]);
