@@ -28,8 +28,8 @@ class TransactionService
         $model->store_id = $store->id;
         $model->store_detail = $store;
         $model->products = $product;
-        $model->subtotal = $product->highest_bidder->bid_value;
-        $model->grandtotal = $product->highest_bidder->bid_value;
+        $model->subtotal = $product->highest_bidder->bid_value - $product->min_deposit;
+        $model->grandtotal = $product->highest_bidder->bid_value - $product->min_deposit;
         $model->save();
 
         return $model;

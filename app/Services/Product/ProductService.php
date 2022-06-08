@@ -2,6 +2,7 @@
 
 namespace App\Services\Product;
 
+use App\Models\Member\Member;
 use App\Models\Product\Product;
 use App\Models\Product\ProductBidder;
 use App\Services\UploadService;
@@ -149,17 +150,25 @@ class ProductService
                 throw new HttpResponseException(response()->json($response, 422));
             }
         }
+        $product = Product::find($request->product_id);
+        if ($request->user()->member->saldo > $product->min_deposit) {
+            $response['status'] = false;
+            $response['message'] = 'You don\'t have enough balance!';
 
+            throw new HttpResponseException(response()->json($response, 422));
+        }
         //Check If member has already bid
         $model = ProductBidder::where('member_id', $request->user()->member->id)
             ->where('product_id', $request->product_id)->first();
         if (!$model) {
+
             $model = new ProductBidder();
             $model->product_id = $request->product_id;
             $model->member_id = $request->user()->member->id;
             $model->bid_value = $request->bid_value;
-            $model->deposit_value = empty($request->deposit_value) ? 0 : $request->deposit_value;
+            $model->deposit_value = $request->deposit_value;
             $model->save();
+            $request->user()->member->update(['saldo' => $request->user()->member->saldo - $request->deposit_value]);
         } else {
 
             //Check if Member's Bid is the Highest
@@ -174,10 +183,11 @@ class ProductService
             //Update Bid Value of Bidder
             $model->bid_value = $request->bid_value;
             $model->save();
+            $request->user()->member->update(['saldo' => $request->user()->member->saldo - $request->deposit_value]);
         }
 
         //End Bid if Bid Value equals Buy In Value
-        $product = Product::find($request->product_id);
+
         if ($request->bid_value == $product->bid_bin) {
             $product->bid_end = now();
             $product->winner_id = $request->user()->id;
@@ -189,5 +199,17 @@ class ProductService
         }
 
         return $model;
+    }
+
+    public function clearDeposit($product_bidder_id)
+    {
+        $product_bidders = ProductBidder::all()->except($product_bidder_id);
+        $product_bidders->each(function ($product_bidder) {
+            $member = Member::find($product_bidder->member_id);
+            $member->saldo = $member->saldo + $product_bidder->deposit_value;
+            $member->save();
+            $product_bidder->deposit_value = 0;
+            $product_bidder->save();
+        });
     }
 }
