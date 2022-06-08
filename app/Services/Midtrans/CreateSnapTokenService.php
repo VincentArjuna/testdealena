@@ -20,18 +20,18 @@ class CreateSnapTokenService extends Midtrans
     public function getSnapToken()
     {
         $orderId = '';
-        if (empty($this->payment_id)) {
-            $orderId = 'DEA-' . $this->transaction->id . '-' . Str::random(10);
+        if (empty($this->transaction->payment_id)) {
+            $orderId = 'DEA-PA-' . $this->transaction->id . '-' . Str::random(10);
             $transaction = Transaction::find($this->transaction->id);
             $transaction->payment_id = $orderId;
             $transaction->save();
         } else {
-            $orderId = $this->payment_id;
+            $orderId = $this->transaction->payment_id;
         }
         $params = [
             'transaction_details' => [
                 'order_id' => $orderId,
-                'gross_amount' => $this->transaction->grandtotal,
+                'gross_amount' => ($this->transaction->grandtotal + $this->transaction->waybill_cost + 10000),
             ],
             'item_details' => [
                 [

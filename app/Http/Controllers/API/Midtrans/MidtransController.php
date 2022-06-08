@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\API\Midtrans;
 
 use App\Http\Controllers\Controller;
+use App\Models\Member\Member;
+use App\Models\Payments\Payment;
 use App\Models\Product\Transaction;
 use App\Services\Midtrans\CreateSnapTokenService;
 use App\Services\Midtrans\Midtrans;
+use App\Services\Midtrans\TopUpSnapTokenService;
+use Illuminate\Support\Str;
 use Midtrans\Config;
+use Request;
 
 class MidtransController extends Controller
 {
@@ -26,7 +31,20 @@ class MidtransController extends Controller
             'redirect_url' => "https://app.sandbox.midtrans.com/snap/v2/vtweb/" . $snapToken,
         ]);
     }
-
+    public function topUp(Request $request, TopUpSnapTokenService $service)
+    {
+        $payments = Payment::create([
+            'member_id' => $request->user()->member->id,
+            'amount' => $request->amount,
+            'type' => 'TopUp',
+            'status' => 'waiting_payment'
+        ]);
+        $snapToken = $service->getSnapToken($payments->id);
+        return response()->json([
+            'token' => $snapToken,
+            'redirect_url' => "https://app.sandbox.midtrans.com/snap/v2/vtweb/" . $snapToken,
+        ]);
+    }
     public function checkPayment()
     {
         $midtrans = new Midtrans;
@@ -39,9 +57,18 @@ class MidtransController extends Controller
         if ($signature == $notif->signature_key) {
             if ($transaction == 'settlement') {
                 // TODO Set payment status in merchant's database to 'accepted'
-                $transaction = Transaction::where('payment_id', $notif->order_id)->first();
-                $transaction->status = 'processed';
-                $transaction->save();
+                if (Str::contains($notif->order_id, 'DEA-TU')) {
+                    $topup = Payment::where('order_id', $notif->order_id)->first();
+                    $topup->status = 'processed';
+                    $topup->save();
+                    $member = Member::find($topup->member_id);
+                    $member->saldo = $member->saldo + $topup->amount;
+                    $member->save();
+                } else if (Str::contains($notif->order_id, 'DEA-PA')) {
+                    $transaction = Transaction::where('payment_id', $notif->order_id)->first();
+                    $transaction->status = 'processed';
+                    $transaction->save();
+                }
             } else if ($transaction == 'capture') {
                 if ($fraud == 'challenge') {
                     // TODO Set payment status in merchant's database to 'challenge'

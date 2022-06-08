@@ -80,6 +80,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 
     //Midtrans
+    Route::post('/midtrans/getToken/topup', [App\Http\Controllers\API\Midtrans\MidtransController::class, 'topUp']);
     Route::get('/midtrans/getToken/transaction/{transaction_id}', [App\Http\Controllers\API\Midtrans\MidtransController::class, 'getToken']);
 
     // Member address routes
