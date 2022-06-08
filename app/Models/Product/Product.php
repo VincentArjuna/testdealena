@@ -34,12 +34,11 @@ class Product extends Model
     ];
 
     protected $filters = [
-        'between',
         'product_category_id',
         'hot_product',
         'best_product',
         'last_second',
-        'by_bid'
+        'store_city',
     ];
 
     protected $appends = ['remaining_times', 'placeholder_images'];
@@ -133,8 +132,9 @@ class Product extends Model
     //Filters
     public function best_product($query, $value)
     {
-
-        //$query->
+        if ($value) {
+            return $query->withCount('wishlist')->orderBy('wishlist_count', 'desc');
+        }
     }
 
     public function hot_product($query, $value)
@@ -153,25 +153,9 @@ class Product extends Model
         }
     }
 
-    public function by_bid($query, $value)
-    {
-        $exploded = explode(',', $value);
-        $max_bid = ProductBidder::query()
-            ->select(DB::raw('MAX(product_bidders.bid_value) as max_bid, product_bidders.product_id'))
-            ->groupBy('product_bidders.product_id')
-            ->get();
-        $product_ids = [];
-        foreach ($max_bid as $bid) {
-            if ($bid->max_bid >= $exploded[0] && $bid->max_bid <= $exploded[1]) {
-                array_push($product_ids, $bid->product_id);
-            }
-        }
-        return $query->whereIn('id', $product_ids);
-    }
-
     public function store_city($query, $value)
     {
         $store = Store::where('city_id', $value)->get()->pluck('id');
-        return $query->whereIn($store);
+        return $query->whereIn('store_id', $store);
     }
 }

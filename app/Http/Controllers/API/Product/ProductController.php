@@ -64,19 +64,34 @@ class ProductController extends Controller
      */
     public function showAll(Request $request)
     {
-        $products = Product::where('bid_start', '<=', now())
-            ->where('bid_end', '>=', now())
-            ->filter()
-            ->paginate(10);
-        if ($request->member) {
-            $member = Member::find($request->member);
-            $products->each(function ($product) use ($member) {
-                if ($product->memberWishlist($member->id)) {
-                    $product->wishlist = true;
-                } else {
-                    $product->wishlist = false;
-                }
-            });
+        $product = '';
+        if (
+            $request->has('member')
+            || $request->has('product_category_id')
+            || $request->has('hot_product')
+            || $request->has('best_product')
+            || $request->has('last_second')
+            || $request->has('store_city')
+        ) {
+            $products = Product::where('bid_start', '<=', now())
+                ->where('bid_end', '>=', now())
+                ->filter()
+                ->paginate(10);
+            if ($request->member) {
+                $member = Member::find($request->member);
+                $products->each(function ($product) use ($member) {
+                    if ($product->memberWishlist($member->id)) {
+                        $product->wishlist = true;
+                    } else {
+                        $product->wishlist = false;
+                    }
+                });
+            }
+        } else {
+            $products = Product::where('bid_start', '<=', now())
+                ->where('bid_end', '>=', now())
+                ->latest()
+                ->paginate(10);
         }
         return response()->json([
             'products' => $products
