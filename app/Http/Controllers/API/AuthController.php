@@ -10,6 +10,8 @@ use App\Http\Requests\ResetPasswordRequest;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 
+use Laravel\Socialite\Facades\Socialite;
+
 class AuthController extends Controller
 {
     /**
@@ -106,5 +108,15 @@ class AuthController extends Controller
             'user' => $submit['user'],
             'message' => 'Successfully change password!'
         ]);
+    }
+
+    public function googleLogin()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function googleCallback()
+    {
+        # code...
     }
 }
