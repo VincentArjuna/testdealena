@@ -38,7 +38,8 @@ class ProductSubmitRequest extends FormRequest
             'images_back' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2000',
             'images_left' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2000',
             'images_right' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2000',
-            'bid_bin' => 'required|numeric'
+            'bid_bin' => 'required|numeric',
+            'min_deposit' => 'numeric'
         ];
     }
 

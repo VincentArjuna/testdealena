@@ -27,7 +27,9 @@ class DeliveryCostRequest extends FormRequest
     {
         return [
             'origin' => 'required|numeric',
+            'originType' => 'required|string',
             'destination' => 'required|numeric',
+            'destinationType' => 'required|string',
             'weight' => 'required|numeric',
             'courier' => 'required|in:jne,pos,tiki'
         ];
