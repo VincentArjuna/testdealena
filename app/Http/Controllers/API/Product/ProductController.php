@@ -66,7 +66,7 @@ class ProductController extends Controller
     {
         $product = '';
         if (
-            $request->has('member')
+            $request->has('member_id')
             || $request->has('product_category_id')
             || $request->has('hot_product')
             || $request->has('best_product')
@@ -77,8 +77,13 @@ class ProductController extends Controller
                 ->where('bid_end', '>=', now())
                 ->filter()
                 ->paginate(10);
-            if ($request->member) {
-                $member = Member::find($request->member);
+            if ($request->member_id) {
+                $member = Member::find($request->member_id);
+                if (empty($member)) {
+                    $response['message'] = 'Member Not Found';
+        
+                    throw new HttpResponseException(response()->json($response, 422));
+                }
                 $products->each(function ($product) use ($member) {
                     if ($product->memberWishlist($member->id)) {
                         $product->wishlist = true;
