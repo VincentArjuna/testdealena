@@ -41,7 +41,7 @@ class Product extends Model
         'store_city',
     ];
 
-    protected $appends = ['remaining_times', 'placeholder_images'];
+    protected $appends = ['remaining_times', 'placeholder_images', 'last_bid'];
 
     //Extra Attributes
 
@@ -79,6 +79,19 @@ class Product extends Model
         }
 
         return $images;
+    }
+
+    public function getLastBidAttribute()
+    {
+        $bidders = $this->bidders()
+            ->orderBy('bid_value', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->first();
+        $bid_value = $this->start_bid;
+        if($bidders){
+            $bid_value = $bidders->bid_value;
+        }
+        return $bid_value;
     }
 
     public function getHighestBidderAttribute()

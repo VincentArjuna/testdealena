@@ -31,6 +31,7 @@ class MidtransController extends Controller
             'redirect_url' => "https://app.sandbox.midtrans.com/snap/v2/vtweb/" . $snapToken,
         ]);
     }
+    
     public function topUp(Request $request, TopUpSnapTokenService $service)
     {
         $payments = Payment::create([

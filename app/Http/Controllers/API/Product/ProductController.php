@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ProductSubmitRequest;
+use App\Models\Location\City;
 use App\Models\Member\Member;
 use App\Models\Product\Product;
 use App\Services\Product\ProductService;
@@ -41,6 +42,19 @@ class ProductController extends Controller
                 : false;
         }
 
+        $wishlist = false;
+        if ($request->has('member_id')) {
+            $member = Member::find($request->member_id);
+            if (empty($member)) {
+                $response['message'] = 'Member Not Found';
+
+                throw new HttpResponseException(response()->json($response, 422));
+            }
+            if ($product->memberWishlist($member->id)) {
+                $wishlist = true;
+            }
+        }
+
         if (empty($product)) {
             $response['status'] = false;
             $response['message'] = 'Product not available!';
@@ -48,11 +62,15 @@ class ProductController extends Controller
             throw new HttpResponseException(response()->json($response, 422));
         }
 
+        $city = City::where('city_id', $product->store->city_id)->first();
+
         return response()->json([
             'product' => $product,
             'store' => $product->store,
             'bidders' => $bidders,
             'has_bid' => $has_bid,
+            'wishlist' => $wishlist,
+            'city_name' => $city->city_name,
             'related_products' => $product->related_products
         ]);
     }
@@ -81,7 +99,7 @@ class ProductController extends Controller
                 $member = Member::find($request->member_id);
                 if (empty($member)) {
                     $response['message'] = 'Member Not Found';
-        
+
                     throw new HttpResponseException(response()->json($response, 422));
                 }
                 $products->each(function ($product) use ($member) {

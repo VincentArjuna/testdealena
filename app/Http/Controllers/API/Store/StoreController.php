@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Store;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Store\StoreSubmitRequest;
+use App\Models\Member\FollowedStore;
 use App\Models\Product\Product;
 use App\Models\Product\ProductCategory;
 use App\Models\Store\Store;
@@ -93,8 +94,15 @@ class StoreController extends Controller
                 $query->whereIn('id', $products->pluck('id')->toArray());
             })
             ->get();
-
-        return response()->json(compact('store', 'products', 'categories'));
+        $member_id = $request->user()->member->id;
+        $followed = FollowedStore::where('member_id', $member_id)
+            ->where('store_id', $request->id)->first() ? true : false;
+        return response()->json([
+            'store' => $store,
+            'products' => $products,
+            'categories' => $categories,
+            'followed' => $followed
+        ]);
     }
 
     /**
