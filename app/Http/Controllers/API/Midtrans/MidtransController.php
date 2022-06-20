@@ -9,9 +9,9 @@ use App\Models\Product\Transaction;
 use App\Services\Midtrans\CreateSnapTokenService;
 use App\Services\Midtrans\Midtrans;
 use App\Services\Midtrans\TopUpSnapTokenService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Midtrans\Config;
-use Request;
 
 class MidtransController extends Controller
 {
@@ -31,16 +31,22 @@ class MidtransController extends Controller
             'redirect_url' => "https://app.sandbox.midtrans.com/snap/v2/vtweb/" . $snapToken,
         ]);
     }
-    
-    public function topUp(Request $request, TopUpSnapTokenService $service)
+
+    public function topUp(Request $request)
     {
+        $request->validate([
+            'amount' => 'required|numeric'
+        ]);
+
         $payments = Payment::create([
             'member_id' => $request->user()->member->id,
+            'member_detail' => $request->user()->member,
             'amount' => $request->amount,
             'type' => 'TopUp',
             'status' => 'waiting_payment'
         ]);
-        $snapToken = $service->getSnapToken($payments->id);
+        $service = new TopUpSnapTokenService($payments->id);
+        $snapToken = $service->getSnapToken();
         return response()->json([
             'token' => $snapToken,
             'redirect_url' => "https://app.sandbox.midtrans.com/snap/v2/vtweb/" . $snapToken,

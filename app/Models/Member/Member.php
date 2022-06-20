@@ -2,6 +2,7 @@
 
 namespace App\Models\Member;
 
+use App\Models\Notification;
 use App\Models\Payments\Payment;
 use App\Models\Product\Transaction;
 use App\Models\Product\Wishlist;
@@ -56,5 +57,10 @@ class Member extends Model
     public function payment()
     {
         return $this->hasMany(Payment::class, 'member_id', 'id');
+    }
+
+    public function notification()
+    {
+        return $this->hasMany(Notification::class, 'member_id', 'id');
     }
 }

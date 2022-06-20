@@ -80,6 +80,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/member/transaction/detail/{id}', [App\Http\Controllers\API\Member\TransactionController::class, 'detail']);
     Route::post('/member/transaction/add-waybill_cost', [App\Http\Controllers\API\Member\TransactionController::class, 'addWayBillCost']);
 
+    //Notification
+    Route::get('/member/notification', [App\Http\Controllers\API\User\NotificationController::class, 'getNotification']);
 
     //Midtrans
     Route::post('/midtrans/getToken/topup', [App\Http\Controllers\API\Midtrans\MidtransController::class, 'topUp']);
@@ -107,7 +109,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/product/bid/submit', [App\Http\Controllers\API\Product\ProductController::class, 'submitBid']);
 
     //Wishlist
-    Route::get('/product/wishlist', [App\Http\Controllers\API\Product\WishlistController::class , 'index']);
+    Route::get('/product/wishlist', [App\Http\Controllers\API\Product\WishlistController::class, 'index']);
     Route::post('/product/wishlist/update', [App\Http\Controllers\API\Product\WishlistController::class, 'updateWishlist']);
 
     // RajaOngkir routes

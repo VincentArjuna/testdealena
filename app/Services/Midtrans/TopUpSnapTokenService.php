@@ -3,7 +3,6 @@
 namespace App\Services\Midtrans;
 
 use App\Models\Payments\Payment;
-use App\Models\Product\Transaction;
 use Illuminate\Support\Str;
 use Midtrans\Snap;
 
