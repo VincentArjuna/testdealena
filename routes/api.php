@@ -61,7 +61,8 @@ Route::post('/midtrans/payment-notification', [App\Http\Controllers\API\Midtrans
 
 // Auth access routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
-
+    //run websocket
+    Route::get('/sockets/serve', [App\Http\Controllers\API\Chat\ConversationsController::class, 'startSocket']);
     //Chat
     Route::get('/conversation/{user_two}', [App\Http\Controllers\API\Chat\ConversationsController::class, 'show']);
     Route::post('/conversation/{conversation}/message', [App\Http\Controllers\API\Chat\ConversationsController::class, 'store']);

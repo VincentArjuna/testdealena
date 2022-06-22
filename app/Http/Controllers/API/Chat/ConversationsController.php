@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class ConversationsController extends Controller
 {
+
+    public function startSocket(Request $request)
+    {
+        if ($request->user()->email ==  'vincentiusmandala@gmail.com') {
+            \Illuminate\Support\Facades\Artisan::call('websockets:serve');
+        }
+    }
+
     public function show($user_two)
     {
         $user_one = auth()->user()->id;
