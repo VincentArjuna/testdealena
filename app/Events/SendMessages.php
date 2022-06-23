@@ -34,6 +34,6 @@ class SendMessages implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('conversations.' . $this->message->conversation_id);
+        return new PrivateChannel('conversations.' . $this->message->user_id);
     }
 }
