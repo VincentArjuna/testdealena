@@ -24,18 +24,42 @@ class ConversationsController extends Controller
         ], 400);
     }
 
-    public function show($user_two)
+    public function show_member_chat()
     {
-        $user_one = auth()->user()->id;
-        $conversation = Conversation::where(['user_one' => $user_one, 'user_two' => $user_two])->orWhere(['user_one' => $user_two, 'user_two' => $user_one])
-        ->with('messages')->first();
-        
-        if (empty($conversation)) {
+        $user_id = auth()->user()->id;
+        $conversations = Conversation::where('user_one', $user_id)->latest()->get();
+        foreach ($conversations as $conversation) {
+            $conversation->append('store');
+        }
+        return response()->json([
+            'data' => $conversation
+        ]);
+    }
+    public function show_store_chat()
+    {
+        $user_id = auth()->user()->id;
+        $conversations = Conversation::where('user_two', $user_id)->latest()->get();
+        foreach ($conversations as $conversation) {
+            $conversation->append('member');
+        }
+        return response()->json([
+            'data' => $conversation
+        ]);
+    }
+
+    public function show(Request $request)
+    {
+        $user_id = $request->user()->id;
+        if ($request->missing('conversation_id')) {
             $conversation = Conversation::create([
-                'user_one' => $user_one,
-                'user_two' => $user_two
+                'user_one' => $user_id,
+                'user_two' => $request->target_id
+            ]);
+            return response()->json([
+                'data' => $conversation
             ]);
         }
+        $conversation = Conversation::find($request->conversation_id)->with('messages')->first();
         return response()->json([
             'data' => $conversation
         ]);
@@ -47,10 +71,12 @@ class ConversationsController extends Controller
         $message = $conversation->messages()->create([
             'conversation_id' => $conversation->id,
             'body' => $request->body,
-            'user_id' => $user_id
+            'sender' => $user_id
         ]);
+        $conversation->updated_at = now();
+        $conversation->save();
 
-        SendMessages::dispatch($message);
+        //SendMessages::dispatch($message);
 
         return response()->json([
             'code' => '200',

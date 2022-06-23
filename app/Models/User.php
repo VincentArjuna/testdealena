@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Chat\Conversation;
 use App\Models\Member\Member;
 use App\Models\Member\MemberAddress;
 use App\Models\Product\Product;
