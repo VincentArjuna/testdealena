@@ -27,23 +27,23 @@ class ConversationsController extends Controller
     public function show_member_chat()
     {
         $user_id = auth()->user()->id;
-        $conversations = Conversation::where('user_one', $user_id)->latest()->get();
+        $conversations = Conversation::where('user_one', $user_id)->orderBy('updated_at', 'desc')->get();
         foreach ($conversations as $conversation) {
             $conversation->append('store');
         }
         return response()->json([
-            'data' => $conversation
+            'data' => $conversations
         ]);
     }
     public function show_store_chat()
     {
         $user_id = auth()->user()->id;
-        $conversations = Conversation::where('user_two', $user_id)->latest()->get();
+        $conversations = Conversation::where('user_two', $user_id)->orderBy('updated_at', 'desc')->get();
         foreach ($conversations as $conversation) {
             $conversation->append('member');
         }
         return response()->json([
-            'data' => $conversation
+            'data' => $conversations
         ]);
     }
 
