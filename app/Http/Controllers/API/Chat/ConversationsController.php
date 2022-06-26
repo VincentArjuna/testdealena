@@ -51,17 +51,22 @@ class ConversationsController extends Controller
     {
         $user_id = $request->user()->id;
         if ($request->missing('conversation_id')) {
-            $conversation = Conversation::create([
-                'user_one' => $user_id,
-                'user_two' => $request->target_id
-            ]);
+            $conversation = Conversation::firstOrCreate(
+                ['user_one' => $user_id, 'user_two' => $request->target_id],
+                ['user_one' => $user_id, 'user_two' => $request->target_id]
+            );
             return response()->json([
-                'data' => $conversation
+                'data' => $conversation->append('messages')->append('store')
             ]);
         }
-        $conversation = Conversation::find($request->conversation_id)->with('messages')->first();
+        $conversation = Conversation::where('id', $request->conversation_id)->with('messages')->first();
+        if($conversation->user_one == $user_id){
+            return response()->json([
+                'data' => $conversation->append('store')
+            ]);
+        }
         return response()->json([
-            'data' => $conversation
+            'data' => $conversation->append('member')
         ]);
     }
 

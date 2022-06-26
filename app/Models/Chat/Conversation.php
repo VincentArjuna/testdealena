@@ -22,9 +22,13 @@ class Conversation extends Model
         'updated_at'
     ];
 
+    protected $appends = [
+        'last_message'
+    ];
+
     public function messages()
     {
-        return $this->hasMany(Message::class, 'conversation_id', 'id')->latest();
+        return $this->hasMany(Message::class, 'conversation_id', 'id')->oldest();
     }
 
     public function user_ones()
@@ -45,5 +49,10 @@ class Conversation extends Model
     public function getStoreAttribute()
     {
         return Store::where('user_id', $this->user_two)->first();
+    }
+
+    public function getLastMessageAttribute()
+    {
+        return $this->hasMany(Message::class, 'conversation_id', 'id')->latest()->first();
     }
 }
