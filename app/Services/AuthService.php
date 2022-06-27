@@ -31,7 +31,7 @@ class AuthService
             'phone' => $request['phone'],
             'password' => Hash::make($request['password'])
         ]);
-        event(new Registered($user));
+        //event(new Registered($user));
         $addressService = new MemberAddressService;
         $address = $addressService->registerNew($user, $request);
 

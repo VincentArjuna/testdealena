@@ -68,7 +68,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/conversation/list/store', [App\Http\Controllers\API\Chat\ConversationsController::class, 'show_store_chat']);
     Route::post('/conversation/detail', [App\Http\Controllers\API\Chat\ConversationsController::class, 'show']);
     Route::post('/conversation/{conversation}/message', [App\Http\Controllers\API\Chat\ConversationsController::class, 'store']);
-
+    
     // User routes
     Route::get('/user/my-profile', [App\Http\Controllers\API\User\ProfileController::class, 'index']);
     Route::post('/user/my-profile/store', [App\Http\Controllers\API\User\ProfileController::class, 'store']);
