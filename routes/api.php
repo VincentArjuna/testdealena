@@ -68,7 +68,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/conversation/list/store', [App\Http\Controllers\API\Chat\ConversationsController::class, 'show_store_chat']);
     Route::post('/conversation/detail', [App\Http\Controllers\API\Chat\ConversationsController::class, 'show']);
     Route::post('/conversation/{conversation}/message', [App\Http\Controllers\API\Chat\ConversationsController::class, 'store']);
-    
+
     // User routes
     Route::get('/user/my-profile', [App\Http\Controllers\API\User\ProfileController::class, 'index']);
     Route::post('/user/my-profile/store', [App\Http\Controllers\API\User\ProfileController::class, 'store']);
@@ -102,7 +102,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/store/update', [App\Http\Controllers\API\Store\StoreController::class, 'store']);
     Route::post('/store/generate-slug', [App\Http\Controllers\API\Store\StoreController::class, 'generateSlug']);
     Route::get('/store/view', [App\Http\Controllers\API\Store\StoreController::class, 'view']);
-    Route::get('/store/view-products', [App\Http\Controllers\API\Store\StoreController::class, 'viewProducts']);
+    Route::get('/store/view-products/{status}', [App\Http\Controllers\API\Store\StoreController::class, 'viewProducts']);
     Route::post('/store/update-couriers', [App\Http\Controllers\API\Store\StoreController::class, 'updateCouriers']);
     Route::get('/store/get-courier', [App\Http\Controllers\API\Location\LocationController::class, 'getMemberCourier']);
 

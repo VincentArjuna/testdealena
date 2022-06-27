@@ -7,6 +7,7 @@ use App\Http\Requests\Store\StoreSubmitRequest;
 use App\Models\Member\FollowedStore;
 use App\Models\Product\Product;
 use App\Models\Product\ProductCategory;
+use App\Models\Product\Transaction;
 use App\Models\Store\Store;
 use App\Services\Store\StoreService;
 use Illuminate\Database\Eloquent\Builder;
@@ -111,16 +112,23 @@ class StoreController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function viewProducts(Request $request)
+    public function viewProducts($status, Request $request)
     {
         $user = $request->user();
         $store = $user->store;
-        $products = Product::query()
-            ->where('bid_start', '<=', now())
-            ->where('bid_end', '>=', now())
-            ->where('store_id', $store->id)
-            ->paginate(10);
+        $products = [];
+        if ($status == 'on-going') {
+            $products = Product::query()
+                ->where('bid_start', '<=', now())
+                ->where('bid_end', '>=', now())
+                ->where('store_id', $store->id)
+                ->paginate(10);
+        }else if ($status == 'completed'){
+            $transactions = Transaction::get();
+            
+        }else if($status == 'cancelled'){
 
+        }
         return response()->json([
             'products' => $products
         ]);
