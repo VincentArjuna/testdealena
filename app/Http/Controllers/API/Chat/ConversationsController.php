@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Chat;
 use App\Events\SendMessages;
 use App\Http\Controllers\Controller;
 use App\Models\Chat\Conversation;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 
@@ -50,6 +51,12 @@ class ConversationsController extends Controller
     public function show(Request $request)
     {
         $user_id = $request->user()->id;
+        if ($user_id == $request->target_id) {
+            $response['status'] = false;
+            $response['errors'] = "Unable To Chat Yourself!";
+
+            throw new HttpResponseException(response()->json($response, 422));
+        }
         if ($request->missing('conversation_id')) {
             $conversation = Conversation::firstOrCreate(
                 ['user_one' => $user_id, 'user_two' => $request->target_id],
@@ -60,7 +67,7 @@ class ConversationsController extends Controller
             ]);
         }
         $conversation = Conversation::where('id', $request->conversation_id)->with('messages')->first();
-        if($conversation->user_one == $user_id){
+        if ($conversation->user_one == $user_id) {
             return response()->json([
                 'data' => $conversation->append('store')
             ]);
