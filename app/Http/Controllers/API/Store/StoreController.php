@@ -123,11 +123,16 @@ class StoreController extends Controller
                 ->where('bid_end', '>=', now())
                 ->where('store_id', $store->id)
                 ->paginate(10);
-        }else if ($status == 'completed'){
-            $transactions = Transaction::get();
-            
-        }else if($status == 'cancelled'){
-
+        } else if ($status == 'completed') {
+            $transactions = Transaction::where('store_id', $store->id)
+                ->where('status', 'completed')->get();
+            $product_ids = [];
+            foreach ($transactions as $transaction) {
+                $product_id = $transaction->products->id;
+                array_push($product_ids, $product_id);
+            }
+            $products = Product::whereIn('id', $product_ids)->paginate(10);
+        } else if ($status == 'cancelled') {
         }
         return response()->json([
             'products' => $products
