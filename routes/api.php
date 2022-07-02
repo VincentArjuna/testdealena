@@ -19,6 +19,8 @@ Broadcast::routes(['middleware' => ['auth:sanctum']]);
 // Default Routes
 Route::get('/index', [App\Http\Controllers\API\AuthController::class, 'index'])->name('api');
 
+Route::get('/check-email/{email}', [App\Http\Controllers\API\AuthController::class, 'checkEmail']);
+
 Route::post('/register', [App\Http\Controllers\API\AuthController::class, 'register']);
 
 Route::post('/login', [App\Http\Controllers\API\AuthController::class, 'login']);

@@ -7,13 +7,31 @@ use App\Http\Requests\ForgotPasswordRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\ResetPasswordRequest;
+use App\Models\User;
 use App\Services\AuthService;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
+
+    public function checkEmail($email)
+    {
+        $user = User::where('email', $email)->first();
+        $response = [];
+        if (!empty($user)) {
+            $response['status'] = false;
+            $response['message'] = 'Email Has been registered!';
+
+            throw new HttpResponseException(response()->json($response, 422));
+        }
+        $response['status'] = true;
+        $response['message'] = 'Email is available to be registered!';
+        return response()->json($response, 200);
+    }
+
     /**
      * Index page
      */
