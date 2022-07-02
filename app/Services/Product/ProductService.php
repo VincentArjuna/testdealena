@@ -150,13 +150,24 @@ class ProductService
                 throw new HttpResponseException(response()->json($response, 422));
             }
         }
+
+        //Check if member has enough balance to pay deposit
         $product = Product::find($request->product_id);
-        if ($request->user()->member->saldo > $product->min_deposit) {
+        if ($request->user()->member->saldo < $product->min_deposit) {
             $response['status'] = false;
             $response['message'] = 'You don\'t have enough balance!';
 
             throw new HttpResponseException(response()->json($response, 422));
         }
+
+        //Check if bid higher than start bid
+        if ($request->bid_value < $product->start_bid) {
+            $response['status'] = false;
+            $response['message'] = 'You need to bid higher than start bid!';
+
+            throw new HttpResponseException(response()->json($response, 422));
+        }
+
         //Check If member has already bid
         $model = ProductBidder::where('member_id', $request->user()->member->id)
             ->where('product_id', $request->product_id)->first();

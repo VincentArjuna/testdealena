@@ -40,12 +40,6 @@ class TopUpSnapTokenService extends Midtrans
                     'quantity' => 1,
                     'name' => 'Top Up Saldo Dealena',
                 ],
-                [
-                    'id' => 2,
-                    'price' => 10000,
-                    'quantity' => 1,
-                    'name' => 'Biaya Admin',
-                ]
             ],
             'customer_details' => [
                 'first_name' => $this->payment->member_detail->get('first_name'),

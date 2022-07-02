@@ -62,14 +62,14 @@ class MidtransController extends Controller
         $input = $notif->order_id . $notif->status_code . $notif->gross_amount . Config::$serverKey;
         $signature = openssl_digest($input, 'sha512');
         if ($signature == $notif->signature_key) {
-            if ($transaction == 'settlement') {
+            if ($transaction === "settlement") {
                 // TODO Set payment status in merchant's database to 'accepted'
                 if (Str::contains($notif->order_id, 'DEA-TU')) {
                     $topup = Payment::where('order_id', $notif->order_id)->first();
                     $topup->status = 'processed';
                     $topup->save();
                     $member = Member::find($topup->member_id);
-                    $member->saldo = $member->saldo + $topup->amount;
+                    $member->saldo += $topup->amount;
                     $member->save();
                 } else if (Str::contains($notif->order_id, 'DEA-PA')) {
                     $transaction = Transaction::where('payment_id', $notif->order_id)->first();
