@@ -42,6 +42,7 @@ class AuthService
                 'first_name' => $user->name,
                 'birth_date' => $request->birth_date,
                 'gender' => $request->gender,
+                'image' => $request->photo_url ? $request->photo_url : null,
             ]);
         }
         DB::commit();

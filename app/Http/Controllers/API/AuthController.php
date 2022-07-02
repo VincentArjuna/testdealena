@@ -21,12 +21,17 @@ class AuthController extends Controller
     {
         $user = User::where('email', $email)->first();
         $response = [];
-        if (!empty($user)) {
-            $response['status'] = false;
-            $response['message'] = 'Email Has been registered!';
 
-            throw new HttpResponseException(response()->json($response, 422));
+        if (!empty($user)) {
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return response()->json([
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+                'message' => 'Successfully Login'
+            ]);
         }
+
         $response['status'] = true;
         $response['message'] = 'Email is available to be registered!';
         return response()->json($response, 200);
