@@ -22,41 +22,6 @@ class CreateEntitiesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-
-        $data = collect([
-            [
-                'name' => 'bid_end',
-                'value' => '1',
-                'text' => '1 Hari'
-            ],
-            [
-                'name' => 'bid_end',
-                'value' => '3',
-                'text' => '3 Hari'
-            ],
-            [
-                'name' => 'bid_end',
-                'value' => '7',
-                'text' => '1 Minggu'
-            ],
-            [
-                'name' => 'bid_end',
-                'value' => '14',
-                'text' => '2 Minggu'
-            ],
-            [
-                'name' => 'bid_end',
-                'value' => '30',
-                'text' => '1 Bulan'
-            ],
-        ]);
-        foreach ($data as $item) {
-            $model = new Entity();
-            $model->name = $item['name'];
-            $model->value = $item['value'];
-            $model->text = $item['text'];
-            $model->save();
-        }
     }
 
     /**

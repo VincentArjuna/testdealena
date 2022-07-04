@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
         integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-
+    <link rel="icon" href="{{ asset('images/favicon.png') }}">
     <title>Dealena</title>
 </head>
 

@@ -22,8 +22,14 @@ class ProductController extends Controller
     public function show(Request $request)
     {
         $product = Product::find($request->id);
-        $product->view_count = $product->view_count + 1;
-        $product->save();
+        if (
+            empty(auth('sanctum')->user()) ||
+            auth('sanctum')->user()->store->id !== $product->store_id
+        ) {
+            $product->view_count = $product->view_count + 1;
+            $product->save();
+        }
+
 
         // Get list bidders
         $bidders = $product->bidders()

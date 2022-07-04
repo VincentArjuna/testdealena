@@ -89,6 +89,56 @@ class ProductService
                     $product->bid_end = Date::parse($request->bid_start)
                         ->addDays($request->bid_end_range)
                         ->format('Y-m-d H:i:s');
+                    /*
+                    switch ($request->bid_end_range) {
+                        case '1':
+                            Date::parse($request->bid_start)
+                                ->addHours(6)
+                                ->format('Y-m-d H:i:s');
+                            break;
+                        case '2':
+                            Date::parse($request->bid_start)
+                                ->addHours(12)
+                                ->format('Y-m-d H:i:s');
+                            break;
+                        case '3':
+                            Date::parse($request->bid_start)
+                                ->addHours(24)
+                                ->format('Y-m-d H:i:s');
+                            break;
+                        case '4':
+                            Date::parse($request->bid_start)
+                                ->addHours(48)
+                                ->format('Y-m-d H:i:s');
+                            break;
+                        case '5':
+                            Date::parse($request->bid_start)
+                                ->addHours(72)
+                                ->format('Y-m-d H:i:s');
+                            break;
+                        case '6':
+                            Date::parse($request->bid_start)
+                                ->addHours(12)
+                                ->format('Y-m-d H:i:s');
+                            break;
+                        case '7':
+                            Date::parse($request->bid_start)
+                                ->addHours(24)
+                                ->format('Y-m-d H:i:s');
+                            break;
+                        case '8':
+                            Date::parse($request->bid_start)
+                                ->addHours(48)
+                                ->format('Y-m-d H:i:s');
+                            break;
+                        default:
+                            throw new HttpResponseException(response()->json([
+                                'message' => 'Bid End Range False'
+                            ], 422));
+                            break;
+                            
+                    }
+                    */
                 }
             } else {
                 $product->{$key} = $value;

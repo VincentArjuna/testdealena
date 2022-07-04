@@ -20,6 +20,10 @@ class Member extends Model
 
     public function getImageUrlAttribute()
     {
+        if (str_contains($this->image, 'http')) {
+            return $this->image;
+        }
+
         return !empty($this->image)
             ? url('images/members/' . $this->image)
             : url('images/placeholder/no-user.png');
