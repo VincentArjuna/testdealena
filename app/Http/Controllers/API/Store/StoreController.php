@@ -133,6 +133,10 @@ class StoreController extends Controller
             }
             $products = Product::whereIn('id', $product_ids)->paginate(10);
         } else if ($status == 'cancelled') {
+            $products = Product::query()
+                ->where('bid_end', '<=', now())
+                ->where('store_id', $store->id)
+                ->paginate(10);
         }
         return response()->json([
             'products' => $products

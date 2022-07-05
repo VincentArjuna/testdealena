@@ -6,6 +6,7 @@ use App\Models\Notification;
 use App\Models\Payments\Payment;
 use App\Models\Product\Transaction;
 use App\Models\Product\Wishlist;
+use App\Models\Store\Store;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +17,7 @@ class Member extends Model
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    protected $appends = ['image_url', 'full_name'];
+    protected $appends = ['image_url', 'full_name', 'default_address', 'has_store'];
 
     public function getImageUrlAttribute()
     {
@@ -36,6 +37,22 @@ class Member extends Model
         $name .= $this->last_name ? $this->last_name : null;
 
         return $name;
+    }
+
+    public function getDefaultAddressAttribute()
+    {
+        return MemberAddress::where('user_id', $this->user_id)->whereIsDefault(true)->first();
+    }
+
+    public function getHasStoreAttribute()
+    {
+        $store = Store::where('user_id', $this->user_id)->first();
+
+        if ($store) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function user()

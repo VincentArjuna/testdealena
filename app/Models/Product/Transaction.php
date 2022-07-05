@@ -33,7 +33,8 @@ class Transaction extends Model
             ['code' => 'processed', 'label' => 'Processed'],
             ['code' => 'on_delivery', 'label' => 'On Delivery'],
             ['code' => 'delivered', 'label' => 'Delivered'],
-            ['code' => 'completed', 'label' => 'Completed']
+            ['code' => 'completed', 'label' => 'Completed'],
+            ['code' => 'cancelled', 'label' => 'Cancelled']
         ]);
     }
 

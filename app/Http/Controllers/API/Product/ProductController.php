@@ -100,6 +100,7 @@ class ProductController extends Controller
             $products = Product::where('bid_start', '<=', now())
                 ->where('bid_end', '>=', now())
                 ->filter()
+                ->latest()
                 ->paginate(10);
             if ($request->member_id) {
                 $member = Member::find($request->member_id);

@@ -18,6 +18,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('bid:check')
             ->everyMinute()
             ->runInBackground();
+        $schedule->command('member:payment')
+            ->everyMinute()
+            ->runInBackground();
     }
 
     /**

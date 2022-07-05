@@ -86,48 +86,49 @@ class ProductService
                 }
                 if ($key == 'bid_end_range' && $request->filled('bid_end_range')) {
                     $product->{$key} = $value;
+                    /*
                     $product->bid_end = Date::parse($request->bid_start)
                         ->addDays($request->bid_end_range)
                         ->format('Y-m-d H:i:s');
-                    /*
+                    */
                     switch ($request->bid_end_range) {
                         case '1':
-                            Date::parse($request->bid_start)
+                            $product->bid_end = Date::parse($request->bid_start)
                                 ->addHours(6)
                                 ->format('Y-m-d H:i:s');
                             break;
                         case '2':
-                            Date::parse($request->bid_start)
+                            $product->bid_end = Date::parse($request->bid_start)
                                 ->addHours(12)
                                 ->format('Y-m-d H:i:s');
                             break;
                         case '3':
-                            Date::parse($request->bid_start)
+                            $product->bid_end = Date::parse($request->bid_start)
                                 ->addHours(24)
                                 ->format('Y-m-d H:i:s');
                             break;
                         case '4':
-                            Date::parse($request->bid_start)
+                            $product->bid_end = Date::parse($request->bid_start)
                                 ->addHours(48)
                                 ->format('Y-m-d H:i:s');
                             break;
                         case '5':
-                            Date::parse($request->bid_start)
+                            $product->bid_end = Date::parse($request->bid_start)
                                 ->addHours(72)
                                 ->format('Y-m-d H:i:s');
                             break;
                         case '6':
-                            Date::parse($request->bid_start)
+                            $product->bid_end = Date::parse($request->bid_start)
                                 ->addHours(12)
                                 ->format('Y-m-d H:i:s');
                             break;
                         case '7':
-                            Date::parse($request->bid_start)
+                            $product->bid_end = Date::parse($request->bid_start)
                                 ->addHours(24)
                                 ->format('Y-m-d H:i:s');
                             break;
                         case '8':
-                            Date::parse($request->bid_start)
+                            $product->bid_end = Date::parse($request->bid_start)
                                 ->addHours(48)
                                 ->format('Y-m-d H:i:s');
                             break;
@@ -136,9 +137,7 @@ class ProductService
                                 'message' => 'Bid End Range False'
                             ], 422));
                             break;
-                            
                     }
-                    */
                 }
             } else {
                 $product->{$key} = $value;
@@ -245,6 +244,30 @@ class ProductService
             $model->bid_value = $request->bid_value;
             $model->save();
             $request->user()->member->update(['saldo' => $request->user()->member->saldo - $request->deposit_value]);
+            switch ($product->bid_end_range) {
+                case '6':
+                    $product->bid_end = Date::parse($product->bid_end)
+                        ->addHours(12)
+                        ->format('Y-m-d H:i:s');
+                    $product->save();
+                    break;
+                case '7':
+                    $product->bid_end = Date::parse($product->bid_end)
+                        ->addHours(24)
+                        ->format('Y-m-d H:i:s');
+                    $product->save();
+
+                    break;
+                case '8':
+                    $product->bid_end = Date::parse($product->bid_end)
+                        ->addHours(48)
+                        ->format('Y-m-d H:i:s');
+                    $product->save();
+                    break;
+                default:
+                    # code...
+                    break;
+            }
         }
 
         //End Bid if Bid Value equals Buy In Value
