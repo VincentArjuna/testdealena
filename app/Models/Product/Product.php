@@ -87,7 +87,7 @@ class Product extends Model
             ->orderBy('created_at', 'desc')
             ->first();
         $bid_value = $this->start_bid;
-        if($bidders){
+        if ($bidders) {
             $bid_value = $bidders->bid_value;
         }
         return $bid_value;
@@ -99,6 +99,12 @@ class Product extends Model
             ->orderBy('bid_value', 'desc')
             ->orderBy('created_at', 'desc')
             ->first();
+    }
+
+    public function getTransactionStatusAttribute()
+    {
+        $transaction = Transaction::where('products', 'like', '%\"id\":' . $this->id)->first();
+        return $transaction->status;
     }
 
     //Relation

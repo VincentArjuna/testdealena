@@ -125,7 +125,7 @@ class StoreController extends Controller
                 ->paginate(10);
         } else if ($status == 'completed') {
             $transactions = Transaction::where('store_id', $store->id)
-                ->where('status', 'completed')->get();
+                ->where('status', 'waiting_payment')->get();
             $product_ids = [];
             foreach ($transactions as $transaction) {
                 $product_id = $transaction->products->id;
