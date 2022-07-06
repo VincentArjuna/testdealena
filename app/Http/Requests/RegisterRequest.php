@@ -38,7 +38,7 @@ class RegisterRequest extends FormRequest
             'address' => 'required|string',
             'birth_date' => 'string',
             'gender' => 'string',
-            'photo_url' => 'string',
+            'photo_url' => 'string|nullable',
         ];
     }
 

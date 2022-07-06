@@ -51,4 +51,14 @@ class TransactionService
 
         return $transaction;
     }
+
+    public function addWayBillNumber(Request $request)
+    {
+        $transaction = Transaction::find($request->id);
+        $transaction->waybill_number = $request->waybill_number;
+        $transaction->status = "processed";
+        $transaction->save();
+
+        return $transaction;
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Member;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product\Transaction;
 use App\Services\Product\TransactionService;
 use Illuminate\Http\Request;
 
@@ -54,6 +55,26 @@ class TransactionController extends Controller
         $response['status'] = true;
         $response['message'] = 'Successfully updated transaction';
         $response['data'] = (new TransactionService)->addWayBillCost($request);
+
+        return response()->json($response);
+    }
+
+    public function addWayBillNumber(Request $request)
+    {
+        $response['status'] = true;
+        $response['message'] = 'Successfully updated transaction';
+        $response['data'] = (new TransactionService)->addWayBillNumber($request);
+
+        return response()->json($response);
+    }
+
+    public function completeTransaction(Transaction $transaction)
+    {
+        $transaction->status = "completed";
+        $transaction->save();
+        $response['status'] = true;
+        $response['message'] = 'Successfully updated transaction';
+        $response['data'] = $transaction;
 
         return response()->json($response);
     }
