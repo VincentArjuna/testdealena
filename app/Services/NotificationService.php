@@ -13,4 +13,14 @@ class NotificationService
 
         return $notification;
     }
+
+    public function productOnAuction($member_id)
+    {
+        Notification::create([
+            'member_id' => $member_id,
+            'type' => 'store',
+            'category' => 'info',
+            'detail' => ''
+        ]);
+    }
 }

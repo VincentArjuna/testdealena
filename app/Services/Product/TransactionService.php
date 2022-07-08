@@ -63,7 +63,7 @@ class TransactionService
             throw new HttpResponseException(response()->json($response, 422));
         }
         $transaction->waybill_number = $request->waybill_number;
-        $transaction->status = "processed";
+        $transaction->status = "on_delivery";
         $transaction->save();
 
         return $transaction;
