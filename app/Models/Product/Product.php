@@ -103,7 +103,7 @@ class Product extends Model
 
     public function getTransactionStatusAttribute()
     {
-        $transaction = Transaction::where('products', 'like', '%\"id\":' . $this->id)->first();
+        $transaction = Transaction::where('products', 'like', '%\"id\":' . $this->id . '%')->first();
         return $transaction->status;
     }
 

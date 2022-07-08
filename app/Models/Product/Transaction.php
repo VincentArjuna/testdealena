@@ -32,7 +32,6 @@ class Transaction extends Model
             ['code' => 'waiting_payment', 'label' => 'Waiting Payment'],
             ['code' => 'processed', 'label' => 'Processed'],
             ['code' => 'on_delivery', 'label' => 'On Delivery'],
-            ['code' => 'delivered', 'label' => 'Delivered'],
             ['code' => 'completed', 'label' => 'Completed'],
             ['code' => 'cancelled', 'label' => 'Cancelled']
         ]);

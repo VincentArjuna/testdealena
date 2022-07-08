@@ -61,4 +61,16 @@ class TransactionService
 
         return $transaction;
     }
+
+    public function completeTransaction(Transaction $transaction)
+    {
+        $transaction->status = "completed";
+        $transaction->save();
+        $user_id = $transaction->store_detail['user_id'];
+        $deposit_value = $transaction->products['min_deposit'];
+        $member = Member::where('user_id', $user_id)->first();
+        $member->saldo += $transaction->grandtotal + $deposit_value;
+        $member->save();
+        return $transaction;
+    }
 }

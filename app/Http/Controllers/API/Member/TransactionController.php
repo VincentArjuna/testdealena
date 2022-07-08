@@ -70,11 +70,9 @@ class TransactionController extends Controller
 
     public function completeTransaction(Transaction $transaction)
     {
-        $transaction->status = "completed";
-        $transaction->save();
         $response['status'] = true;
         $response['message'] = 'Successfully updated transaction';
-        $response['data'] = $transaction;
+        $response['data'] = (new TransactionService)->completeTransaction($transaction);
 
         return response()->json($response);
     }
