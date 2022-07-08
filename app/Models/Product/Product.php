@@ -100,6 +100,11 @@ class Product extends Model
             ->orderBy('created_at', 'desc')
             ->first();
     }
+    public function getTransactionIdAttribute()
+    {
+        $transaction = Transaction::where('products', 'like', '%\"id\":' . $this->id . '%')->first();
+        return $transaction->id;
+    }
 
     public function getTransactionStatusAttribute()
     {

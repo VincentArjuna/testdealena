@@ -133,6 +133,7 @@ class StoreController extends Controller
             }
             $products = Product::whereIn('id', $product_ids)->latest()->get();
             foreach ($products as $product) {
+                $product->append('transaction_id');
                 $product->append('transaction_status');
             }
         } else if ($status == 'cancelled') {
