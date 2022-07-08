@@ -122,7 +122,7 @@ class StoreController extends Controller
                 ->where('bid_start', '<=', now())
                 ->where('bid_end', '>=', now())
                 ->where('store_id', $store->id)
-                ->get();
+                ->latest()->get();
         } else if ($status == 'completed') {
             $transactions = Transaction::where('store_id', $store->id)
                 ->where('status', '!=', 'cancelled')->get();
@@ -131,7 +131,7 @@ class StoreController extends Controller
                 $product_id = $transaction->products['id'];
                 array_push($product_ids, $product_id);
             }
-            $products = Product::whereIn('id', $product_ids)->get();
+            $products = Product::whereIn('id', $product_ids)->latest()->get();
             foreach ($products as $product) {
                 $product->append('transaction_status');
             }
@@ -139,7 +139,7 @@ class StoreController extends Controller
             $products = Product::query()
                 ->where('bid_end', '<=', now())
                 ->where('store_id', $store->id)
-                ->get();
+                ->latest()->get();
         }
         return response()->json([
             'products' => $products

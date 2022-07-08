@@ -5,6 +5,7 @@ namespace App\Services\Product;
 use App\Models\Member\Member;
 use App\Models\Product\Transaction;
 use App\Models\Product\Product;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 
 class TransactionService
@@ -55,6 +56,12 @@ class TransactionService
     public function addWayBillNumber(Request $request)
     {
         $transaction = Transaction::find($request->id);
+        if (empty($transaction)) {
+            $response['status'] = false;
+            $response['message'] = 'Please create store first before submitting product!';
+
+            throw new HttpResponseException(response()->json($response, 422));
+        }
         $transaction->waybill_number = $request->waybill_number;
         $transaction->status = "processed";
         $transaction->save();
