@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Product\Product;
+use App\Models\User;
 use App\Notifications\Product\AuctionClosedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -67,7 +68,7 @@ Route::get('/notification', function () {
     $product = Product::find(79);
 
     return (new AuctionClosedNotification($product))
-        ->toMail(auth('sactum')->user());
+        ->toMail(User::find(6));
 });
 
 // Auth access routes
