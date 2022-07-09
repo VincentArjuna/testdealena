@@ -48,19 +48,6 @@ class NotificationService
         ]);
     }
 
-    public function auctionBuyIn($product)
-    {
-        $member_id = $product->member_id;
-        $detail = "Product " . $product->name . " telah di Buy In!";
-
-        Notification::create([
-            'member_id' => $member_id,
-            'type' => 'store',
-            'category' => 'info',
-            'detail' => $detail
-        ]);
-    }
-
     public function auctionWin($product)
     {
         $member_id = $product->winner_id;

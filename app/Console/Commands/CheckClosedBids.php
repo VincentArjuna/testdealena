@@ -65,6 +65,8 @@ class CheckClosedBids extends Command
                 (new TransactionService)->storeTransaction($product, $member_id);
             }
             $product->update($update->toArray());
+
+            //Create Notification
             $service->auctionClosed($product);
             $bar->advance();
         }

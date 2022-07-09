@@ -278,11 +278,12 @@ class ProductService
             $product->winner_id = $request->user()->id;
             $product->is_show = 0;
             $product->save();
+
+            //Create Transaction
+            (new TransactionService)->storeTransaction($product, $request->user()->member->id);
+            //Create Notification
             $service = new NotificationService;
             $service->auctionClosed($product);
-            $service->auctionBuyIn($product);
-            //Create Transaction
-            $transaction = (new TransactionService)->storeTransaction($product, $request->user()->member->id);
         }
 
         return $model;
