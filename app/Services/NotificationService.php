@@ -36,7 +36,7 @@ class NotificationService
     {
         $member_id = $product->member_id;
         $detail = "Masa lelang produk " . $product->name . " telah berakhir!";
-
+        
         Notification::create([
             'member_id' => $member_id,
             'type' => 'store',
