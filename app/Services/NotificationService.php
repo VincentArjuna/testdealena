@@ -4,8 +4,11 @@ namespace App\Services;
 
 use App\Models\Member\Member;
 use App\Models\Notification;
+use App\Models\Product\Product;
+use App\Models\Store\Store;
 use App\Models\User;
 use App\Notifications\Product\AuctionClosedNotification;
+use App\Notifications\Product\AuctionWinNotification;
 
 class NotificationService
 {
@@ -36,12 +39,14 @@ class NotificationService
 
     public function auctionClosed($product)
     {
-        $member_id = $product->member_id;
-        $member = Member::find($member_id);
-        $member->user()->notify(new AuctionClosedNotification($product->id));
-        $detail = "Masa lelang produk \"" . strtoupper($this->product->name)  . "\" telah berakhir!";
+        $store = Store::find($product->store_id);
+        $user = User::find($store->user_id);
+        $user->notify(new AuctionClosedNotification($product->id));
+        $member = Member::where('user_id', $user->id)->first();
+
+        $detail = "Masa lelang produk \"" . strtoupper($product->name)  . "\" telah berakhir!";
         Notification::create([
-            'member_id' => $member_id,
+            'member_id' => $member->id,
             'type' => 'store',
             'category' => 'info',
             'detail' => $detail
@@ -50,19 +55,21 @@ class NotificationService
 
     public function auctionWin($product)
     {
-        $member_id = $product->winner_id;
-        $detail = "Anda telah memenangkan lelang " . $product->name;
-
+        $store = Store::find($product->store_id);
+        $user = User::find($store->user_id);
+        $user->notify(new AuctionWinNotification($product->id));
+        $member = Member::where('user_id', $user->id)->first();
+        $detail = "Anda telah memenangkan lelang \"" .  strtoupper($product->name)  . "\"";
         Notification::create([
-            'member_id' => $member_id,
+            'member_id' => $member->id,
             'type' => 'member',
             'category' => 'info',
             'detail' => $detail
         ]);
     }
 
-    public function auctionPaid()
+    public function auctionPaid($product_id)
     {
-        # code...
+        
     }
 }

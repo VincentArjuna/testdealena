@@ -62,7 +62,7 @@ class CheckClosedBids extends Command
                 $update->put('winner_id', $product->highest_bidder->member_id);
 
                 // Create new transaction with product and member
-                (new TransactionService)->storeTransaction($product, $member_id);
+                $transaction = (new TransactionService)->storeTransaction($product, $member_id);
             }
             $product->update($update->toArray());
 

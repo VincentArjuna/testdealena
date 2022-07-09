@@ -9,6 +9,7 @@ use App\Models\Product\Transaction;
 use App\Services\Midtrans\CreateSnapTokenService;
 use App\Services\Midtrans\Midtrans;
 use App\Services\Midtrans\TopUpSnapTokenService;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Midtrans\Config;
@@ -75,6 +76,7 @@ class MidtransController extends Controller
                     $transaction = Transaction::where('payment_id', $notif->order_id)->first();
                     $transaction->status = 'processed';
                     $transaction->save();
+                    (new NotificationService)->auctionPaid($transaction->products['id']);
                 }
             } else if ($transaction == 'capture') {
                 if ($fraud == 'challenge') {

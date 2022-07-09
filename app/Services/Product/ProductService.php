@@ -280,7 +280,7 @@ class ProductService
             $product->save();
 
             //Create Transaction
-            (new TransactionService)->storeTransaction($product, $request->user()->member->id);
+            $transaction = (new TransactionService)->storeTransaction($product, $request->user()->member->id);
             //Create Notification
             $service = new NotificationService;
             $service->auctionClosed($product);

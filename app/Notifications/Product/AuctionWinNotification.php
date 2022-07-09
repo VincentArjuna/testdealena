@@ -42,7 +42,7 @@ class AuctionWinNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        $detail = "Anda telah memenangkan lelang " . $this->product->name;
+        $detail = "Anda telah memenangkan lelang \"" .  strtoupper($this->product->name)  . "\"";
         return (new MailMessage)
             ->greeting('Selamat!')
             ->line($detail)
