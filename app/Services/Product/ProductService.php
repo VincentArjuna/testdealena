@@ -5,6 +5,7 @@ namespace App\Services\Product;
 use App\Models\Member\Member;
 use App\Models\Product\Product;
 use App\Models\Product\ProductBidder;
+use App\Services\NotificationService;
 use App\Services\UploadService;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
@@ -277,7 +278,9 @@ class ProductService
             $product->winner_id = $request->user()->id;
             $product->is_show = 0;
             $product->save();
-
+            $service = new NotificationService;
+            $service->auctionClosed($product);
+            $service->auctionBuyIn($product);
             //Create Transaction
             $transaction = (new TransactionService)->storeTransaction($product, $request->user()->member->id);
         }

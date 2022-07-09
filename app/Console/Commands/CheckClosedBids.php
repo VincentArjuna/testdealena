@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Product\Product;
+use App\Services\NotificationService;
 use App\Services\Product\TransactionService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -41,6 +42,7 @@ class CheckClosedBids extends Command
      */
     public function handle()
     {
+        $service = new NotificationService;
         Log::info('Starting bid:check task!');
         DB::beginTransaction();
         $products = Product::query()
@@ -63,6 +65,7 @@ class CheckClosedBids extends Command
                 (new TransactionService)->storeTransaction($product, $member_id);
             }
             $product->update($update->toArray());
+            $service->auctionClosed($product);
             $bar->advance();
         }
         $bar->finish();

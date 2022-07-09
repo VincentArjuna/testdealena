@@ -64,12 +64,6 @@ Route::get('/product/show', [App\Http\Controllers\API\Product\ProductController:
 //Midtrans Notification
 Route::post('/midtrans/payment-notification', [App\Http\Controllers\API\Midtrans\MidtransController::class, 'checkPayment']);
 
-Route::get('/notification', function () {
-    $product = Product::find(79);
-
-    return (new AuctionClosedNotification($product))
-        ->toMail(User::find(6));
-});
 
 // Auth access routes
 Route::group(['middleware' => ['auth:sanctum']], function () {

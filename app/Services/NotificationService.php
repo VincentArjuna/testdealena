@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Member\Member;
 use App\Models\Notification;
 use App\Models\User;
+use App\Notifications\Product\AuctionClosedNotification;
 
 class NotificationService
 {
@@ -35,8 +37,9 @@ class NotificationService
     public function auctionClosed($product)
     {
         $member_id = $product->member_id;
-        $detail = "Masa lelang produk " . $product->name . " telah berakhir!";
-        
+        $member = Member::find($member_id);
+        $member->user()->notify(new AuctionClosedNotification($product->id));
+        $detail = "Masa lelang produk \"" . strtoupper($this->product->name)  . "\" telah berakhir!";
         Notification::create([
             'member_id' => $member_id,
             'type' => 'store',

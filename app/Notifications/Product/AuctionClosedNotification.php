@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Product;
 
+use App\Models\Product\Product;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -10,16 +11,16 @@ use Illuminate\Notifications\Notification;
 class AuctionClosedNotification extends Notification
 {
     use Queueable;
-    public $detail;
+    public $product;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($product)
+    public function __construct($product_id)
     {
-        $this->product = $product;
+        $this->product = Product::find($product_id);
     }
 
     /**
@@ -41,12 +42,17 @@ class AuctionClosedNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        $detail = "Masa lelang produk " . $this->product->name . " telah berakhir!";
+        $detail = "Masa lelang produk \"" . strtoupper($this->product->name)  . "\" telah berakhir!";
+        if (empty($this->product->winner_id)) {
+            return (new MailMessage)
+                ->greeting('Attention!')
+                ->line($detail)
+                ->line('Lelang ditutup tanpa ada bidder.');
+        }
         return (new MailMessage)
             ->greeting('Attention!')
             ->line($detail)
-            ->attach($this->product->image[0]->path)
-            ->line('Please proceed to the next step');
+            ->line('Harap menunggu proses pembayaran dari pihak Pemenang.');
     }
 
     /**
