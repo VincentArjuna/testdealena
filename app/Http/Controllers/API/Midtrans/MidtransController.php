@@ -76,7 +76,7 @@ class MidtransController extends Controller
                     $transaction = Transaction::where('payment_id', $notif->order_id)->first();
                     $transaction->status = 'processed';
                     $transaction->save();
-                    (new NotificationService)->auctionPaid($transaction->products['id']);
+                    (new NotificationService)->auctionPaid($transaction);
                 }
             } else if ($transaction == 'capture') {
                 if ($fraud == 'challenge') {

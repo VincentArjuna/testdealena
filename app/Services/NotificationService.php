@@ -8,6 +8,7 @@ use App\Models\Product\Product;
 use App\Models\Store\Store;
 use App\Models\User;
 use App\Notifications\Product\AuctionClosedNotification;
+use App\Notifications\Product\AuctionPaidNotification;
 use App\Notifications\Product\AuctionWinNotification;
 
 class NotificationService
@@ -68,8 +69,32 @@ class NotificationService
         ]);
     }
 
-    public function auctionPaid($product_id)
+    public function auctionPaid($transaction)
     {
-        
+        //Store
+        $product = Product::find($transaction->products['id']);
+        $detail = "Pembayaran untuk lelang \"" .  strtoupper($product->name)  . "\" telah diterima";
+
+        $store = Store::find($transaction->store_id);
+        $userStore = User::find($store->user_id);
+        $userStore->notify(new AuctionPaidNotification($product->name, 'store'));
+        $memberStore = Member::where('user_id', $userStore->id)->first();
+
+        Notification::create([
+            'member_id' => $memberStore->id,
+            'type' => 'member',
+            'category' => 'info',
+            'detail' => $detail
+        ]);
+
+        $memberWinner = Member::find($transaction->member_id);
+        $userWinner = User::find($memberWinner->user_id);
+        $userWinner->notify(new AuctionPaidNotification($product->name, 'winner'));
+        Notification::create([
+            'member_id' => $memberWinner->id,
+            'type' => 'member',
+            'category' => 'info',
+            'detail' => $detail
+        ]);
     }
 }

@@ -1,9 +1,5 @@
 <?php
 
-use App\Models\Product\Product;
-use App\Models\User;
-use App\Notifications\Product\AuctionClosedNotification;
-use App\Notifications\Product\AuctionWinNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -64,10 +60,6 @@ Route::get('/product/show', [App\Http\Controllers\API\Product\ProductController:
 
 //Midtrans Notification
 Route::post('/midtrans/payment-notification', [App\Http\Controllers\API\Midtrans\MidtransController::class, 'checkPayment']);
-Route::get('/notification', function () {
-    return (new AuctionWinNotification(78))
-        ->toMail(User::find(6));
-});
 
 // Auth access routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
