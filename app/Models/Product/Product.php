@@ -33,6 +33,7 @@ class Product extends Model
     ];
 
     protected $filters = [
+        'like',
         'product_category_id',
         'hot_product',
         'best_product',

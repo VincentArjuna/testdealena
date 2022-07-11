@@ -91,6 +91,7 @@ class ProductController extends Controller
         $product = '';
         if (
             $request->has('member_id')
+            || $request->has('like')
             || $request->has('product_category_id')
             || $request->has('hot_product')
             || $request->has('best_product')
