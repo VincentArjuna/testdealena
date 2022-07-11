@@ -3,6 +3,7 @@
 namespace App\Services\Product;
 
 use App\Models\Member\Member;
+use App\Models\Payments\Payment;
 use App\Models\Product\Transaction;
 use App\Models\Product\Product;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -78,6 +79,13 @@ class TransactionService
         $member = Member::where('user_id', $user_id)->first();
         $member->saldo += $transaction->grandtotal + $deposit_value;
         $member->save();
+        $payment = Payment::create([
+            'member_id' => $member->id,
+            'member_detail' => $member,
+            'amount' => $transaction->grandtotal + $deposit_value,
+            'type' => 'Payout',
+            'status' => 'Processed',
+        ]);
         return $transaction;
     }
 }

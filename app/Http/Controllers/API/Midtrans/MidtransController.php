@@ -53,6 +53,7 @@ class MidtransController extends Controller
             'redirect_url' => "https://app.sandbox.midtrans.com/snap/v2/vtweb/" . $snapToken,
         ]);
     }
+
     public function checkPayment()
     {
         $midtrans = new Midtrans;
@@ -94,5 +95,17 @@ class MidtransController extends Controller
                 // TODO Set payment status in merchant's database to 'failure'
             }
         }
+    }
+
+    public function getPaymentHistory(Request $request)
+    {
+        $member = $request->user()->member;
+        $payments = Payment::where('member_id', $member->id)
+            ->where('type', '!=', 'TopUp')
+            ->latest()->get();
+
+        return response()->json([
+            'payments' => $payments
+        ]);
     }
 }

@@ -100,6 +100,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/member/address/store', [App\Http\Controllers\API\Member\MemberAddressController::class, 'store']);
     Route::get('/member/address/delete/{id}', [App\Http\Controllers\API\Member\MemberAddressController::class, 'delete']);
 
+
     // Store routes
     Route::get('/store', [App\Http\Controllers\API\Store\StoreController::class, 'index']);
     Route::post('/store/create', [App\Http\Controllers\API\Store\StoreController::class, 'store']);
@@ -109,6 +110,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/store/view-products/{status}', [App\Http\Controllers\API\Store\StoreController::class, 'viewProducts']);
     Route::post('/store/update-couriers', [App\Http\Controllers\API\Store\StoreController::class, 'updateCouriers']);
     Route::get('/store/get-courier', [App\Http\Controllers\API\Location\LocationController::class, 'getMemberCourier']);
+    Route::get('/store/transaction-history', [App\Http\Controllers\API\Midtrans\MidtransController::class, 'getPaymentHistory']);
 
     // Product routes
     Route::post('/product/store', [App\Http\Controllers\API\Product\ProductController::class, 'store']);
