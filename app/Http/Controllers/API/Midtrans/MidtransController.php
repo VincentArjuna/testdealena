@@ -101,7 +101,7 @@ class MidtransController extends Controller
     {
         $member = $request->user()->member;
         $payments = Payment::where('member_id', $member->id)
-            ->where('type', '!=', 'TopUp')
+            ->where('status', 'processed')
             ->latest()->get();
 
         return response()->json([
