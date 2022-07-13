@@ -133,7 +133,10 @@ class Product extends Model
     public function related_products()
     {
         return $this->hasMany(Product::class, 'product_category_id', 'product_category_id')
+            ->where('bid_start', '<=', now())
+            ->where('bid_end', '>=', now())
             ->where('id', '!=', $this->id)
+            ->inRandomOrder()
             ->limit(3);
     }
 
