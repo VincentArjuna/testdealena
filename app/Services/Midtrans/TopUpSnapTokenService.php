@@ -31,7 +31,7 @@ class TopUpSnapTokenService extends Midtrans
         $params = [
             'transaction_details' => [
                 'order_id' => $orderId,
-                'gross_amount' => ($this->payment->amount + 10000),
+                'gross_amount' => ($this->payment->amount),
             ],
             'item_details' => [
                 [

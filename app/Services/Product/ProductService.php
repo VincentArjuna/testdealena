@@ -284,7 +284,7 @@ class ProductService
             //Create Notification
             $service = new NotificationService;
             $service->auctionClosed($product);
-            $service->auctionWin($product);
+            $service->auctionWin($product, $request->user()->id);
         }
 
         return $model;

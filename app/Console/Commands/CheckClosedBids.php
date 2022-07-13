@@ -63,7 +63,7 @@ class CheckClosedBids extends Command
 
                 // Create new transaction with product and member
                 $transaction = (new TransactionService)->storeTransaction($product, $member_id);
-                $service->auctionWin($product);
+                $service->auctionWin($product, $product->highest_bidder->member_id);
             }
             $product->update($update->toArray());
 
