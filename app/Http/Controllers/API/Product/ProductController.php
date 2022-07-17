@@ -52,7 +52,7 @@ class ProductController extends Controller
         if ($request->has('member_id')) {
             $member = Member::find($request->member_id);
             if (empty($member)) {
-                $response['message'] = 'Member Not Found';
+                $response['message'] = 'Member tidak ditemukan';
 
                 throw new HttpResponseException(response()->json($response, 422));
             }
@@ -63,7 +63,7 @@ class ProductController extends Controller
 
         if (empty($product)) {
             $response['status'] = false;
-            $response['message'] = 'Product not available!';
+            $response['message'] = 'Produk tidak tersedia!';
 
             throw new HttpResponseException(response()->json($response, 422));
         }
@@ -106,7 +106,7 @@ class ProductController extends Controller
             if ($request->member_id) {
                 $member = Member::find($request->member_id);
                 if (empty($member)) {
-                    $response['message'] = 'Member Not Found';
+                    $response['message'] = 'Member tidak ditemukan';
 
                     throw new HttpResponseException(response()->json($response, 422));
                 }

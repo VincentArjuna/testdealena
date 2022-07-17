@@ -59,7 +59,7 @@ class TransactionService
         $transaction = Transaction::find($request->id);
         if (empty($transaction)) {
             $response['status'] = false;
-            $response['message'] = 'Please create store first before submitting product!';
+            $response['message'] = 'Transaksi tidak ditemukan!';
 
             throw new HttpResponseException(response()->json($response, 422));
         }

@@ -13,7 +13,7 @@ class NotificationController extends Controller
     {
         $member_id = $request->user()->member->id;
         if (empty($member_id)) {
-            $response['message'] = 'Member Not Found';
+            $response['message'] = 'Member tidak ditemukan';
             throw new HttpResponseException(response()->json($response, 422));
         }
 

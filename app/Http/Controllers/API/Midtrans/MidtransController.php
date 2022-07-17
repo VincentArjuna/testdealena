@@ -10,6 +10,7 @@ use App\Services\Midtrans\CreateSnapTokenService;
 use App\Services\Midtrans\Midtrans;
 use App\Services\Midtrans\TopUpSnapTokenService;
 use App\Services\NotificationService;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Midtrans\Config;
@@ -38,6 +39,13 @@ class MidtransController extends Controller
         $request->validate([
             'amount' => 'required|numeric'
         ]);
+
+        if ($request->amount < 10000) {
+            $response['status'] = false;
+            $response['message'] = 'Minimal TopUp adalah Rp10.000!';
+
+            throw new HttpResponseException(response()->json($response, 422));
+        }
 
         $payments = Payment::create([
             'member_id' => $request->user()->member->id,

@@ -70,12 +70,12 @@ class AuthService
             ->orWhere('phone', $request['login_id'])
             ->first();
         if (empty($user)) {
-            $response['message'] = 'Login failed, User not found';
+            $response['message'] = 'Gagal melakukan Login, User tidak ditemukan';
 
             throw new HttpResponseException(response()->json($response, 422));
         }
         if (!password_verify($request['password'], $user->password)) {
-            $response['message'] = 'Login failed, Password not match';
+            $response['message'] = 'Gagal melakukan Login, Password salah';
 
             throw new HttpResponseException(response()->json($response, 422));
         }
@@ -100,7 +100,7 @@ class AuthService
             ->first();
         if (empty($user)) {
             $response['status'] = false;
-            $response['message'] = 'Sorry no user found!';
+            $response['message'] = 'User tidak ditemukan!';
 
             throw new HttpResponseException(response()->json($response, 422));
         }
@@ -136,7 +136,7 @@ class AuthService
             ->first();
         if (empty($token)) {
             $response['status'] = false;
-            $response['message'] = 'Sorry token has been expired!';
+            $response['message'] = 'Token anda sudah kadaluwarsa, Harap Lakukan Login lagi!';
 
             throw new HttpResponseException(response()->json($response, 422));
         }

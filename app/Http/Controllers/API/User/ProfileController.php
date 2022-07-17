@@ -108,16 +108,16 @@ class ProfileController extends Controller
         $member = $request->user()->member;
         if (empty($member->pin)) {
             $response['status'] = false;
-            $response['message'] = 'Your PIN is not set, set it now!';
+            $response['message'] = 'Anda belum mengisi PIN!';
 
             throw new HttpResponseException(response()->json($response, 422));
         }
         if (!empty($member->pin) && $member->pin == $request->pin) {
             $response['status'] = true;
-            $response['message'] = 'PIN is valid!';
+            $response['message'] = 'PIN anda Valid!';
         } else {
             $response['status'] = false;
-            $response['message'] = 'Incorrect PIN!';
+            $response['message'] = 'PIN anda salah!';
 
             throw new HttpResponseException(response()->json($response, 422));
         }
@@ -195,7 +195,7 @@ class ProfileController extends Controller
         $follow = $request->follow;
         $store = $request->user()->store;
         if ($store && $request->store_id == $request->user()->store->id) {
-            $response['status'] = 'Unable to follow your own store';
+            $response['status'] = 'Tidak dapat mengikuti Toko Anda sendiri!';
             throw new HttpResponseException(response()->json($response, 422));
         }
 
@@ -222,7 +222,7 @@ class ProfileController extends Controller
                 'message' => 'Successfully Unfollowed stores!'
             ]);
         } else {
-            $response['status'] = 'Follow need to be 0 or 1';
+            $response['status'] = 'Follow harus berisi angka 0 atau 1!';
             throw new HttpResponseException(response()->json($response, 422));
         }
     }

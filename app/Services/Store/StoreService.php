@@ -59,7 +59,7 @@ class StoreService
             $couriers = collect(json_decode($value, true));
             if ($couriers->count() < 1) {
                 $response['status'] = false;
-                $response['message'] = 'No courier selected!';
+                $response['message'] = 'Belum ada Kurir yang dipilih!';
 
                 throw new HttpResponseException(response()->json($response, 422));
             }

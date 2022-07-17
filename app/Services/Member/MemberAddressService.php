@@ -55,7 +55,7 @@ class MemberAddressService
             if ($address->is_default && !$request->is_default) {
                 throw new HttpResponseException(
                     response()->json([
-                        'message' => 'No default address specified!',
+                        'message' => 'Anda belum menentukan Alamat Utama!',
                         'status' => false
                     ], 422)
                 );
@@ -87,7 +87,7 @@ class MemberAddressService
         } catch (\Throwable $th) {
             throw new HttpResponseException(
                 response()->json([
-                    'message' => 'No Address Found',
+                    'message' => 'Tidak dapat menemukan Alamat',
                     'status' => false
                 ], 422)
             );

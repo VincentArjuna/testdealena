@@ -53,7 +53,7 @@ class ConversationsController extends Controller
         $user_id = $request->user()->id;
         if ($user_id == $request->target_id) {
             $response['status'] = false;
-            $response['errors'] = "Unable To Chat Yourself!";
+            $response['errors'] = "Tidak Bisa melakukan Chat pada diri sendiri!";
 
             throw new HttpResponseException(response()->json($response, 422));
         }

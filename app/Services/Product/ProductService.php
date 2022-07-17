@@ -27,7 +27,13 @@ class ProductService
         // Check if store exist
         if (empty($store)) {
             $response['status'] = false;
-            $response['message'] = 'Please create store first before submitting product!';
+            $response['message'] = 'Buat toko dahulu sebelum memulai lelang!';
+
+            throw new HttpResponseException(response()->json($response, 422));
+        }
+        if($store->couriers == null){
+            $response['status'] = false;
+            $response['message'] = 'Tentukan Kurir yang Toko Anda sediakan!';
 
             throw new HttpResponseException(response()->json($response, 422));
         }
@@ -83,6 +89,12 @@ class ProductService
                     $key == 'bid_start' && $request->filled('bid_start') ||
                     $key == 'bid_end' && $request->filled('bid_end')
                 ) {
+                    if ($request->bid_end <= $request->bid_start) {
+                        $response['status'] = false;
+                        $response['message'] = 'Durasi Lelang minimal 1 Jam!';
+
+                        throw new HttpResponseException(response()->json($response, 422));
+                    }
                     $product->{$key} = Date::parse($value)->format('Y-m-d H:i:s');
                 }
                 if ($key == 'bid_end_range' && $request->filled('bid_end_range')) {
@@ -135,7 +147,7 @@ class ProductService
                             break;
                         default:
                             throw new HttpResponseException(response()->json([
-                                'message' => 'Bid End Range False'
+                                'message' => 'Durasi Lelang salah!'
                             ], 422));
                             break;
                     }
@@ -179,7 +191,7 @@ class ProductService
         //Check if bidder is member
         if (empty($request->user()->member)) {
             $response['status'] = false;
-            $response['message'] = 'You must be a member!';
+            $response['message'] = 'Anda belum terdaftar sebagai member!';
 
             throw new HttpResponseException(response()->json($response, 422));
         }
@@ -195,7 +207,7 @@ class ProductService
                 : false;
             if ($is_owner) {
                 $response['status'] = false;
-                $response['message'] = 'Product owner can\'t bid on your own product!';
+                $response['message'] = 'Pemilik produk tidak boleh melakukan bid!';
 
                 throw new HttpResponseException(response()->json($response, 422));
             }
@@ -205,7 +217,7 @@ class ProductService
         $product = Product::find($request->product_id);
         if ($request->user()->member->saldo < $product->min_deposit) {
             $response['status'] = false;
-            $response['message'] = 'You don\'t have enough balance!';
+            $response['message'] = 'Saldo anda kurang untuk membayar deposit!';
 
             throw new HttpResponseException(response()->json($response, 422));
         }
@@ -213,7 +225,7 @@ class ProductService
         //Check if bid higher than start bid
         if ($request->bid_value < $product->start_bid) {
             $response['status'] = false;
-            $response['message'] = 'You need to bid higher than start bid!';
+            $response['message'] = 'Bid Anda kurang tinggi!';
 
             throw new HttpResponseException(response()->json($response, 422));
         }
@@ -232,13 +244,28 @@ class ProductService
             $request->user()->member->update(['saldo' => $request->user()->member->saldo - $request->deposit_value]);
         } else {
 
-            //Check if Member's Bid is the Highest
-            $highest_bid = ProductBidder::where('product_id', $request->product_id)->orderBy('bid_value', 'desc')->first();
-            if ($request->user()->member->id == $highest_bid->member_id) {
-                $response['status'] = false;
-                $response['message'] = 'Your Bid is the Highest!';
+            //End Bid if Bid Value equals Buy In Value
+            if ($request->bid_value == $product->bid_bin) {
+                $product->bid_end = now();
+                $product->winner_id = $request->user()->id;
+                $product->is_show = 0;
+                $product->save();
 
-                throw new HttpResponseException(response()->json($response, 422));
+                //Create Transaction
+                $transaction = (new TransactionService)->storeTransaction($product, $request->user()->member->id);
+                //Create Notification
+                $service = new NotificationService;
+                $service->auctionClosed($product);
+                $service->auctionWin($product, $request->user()->id);
+            } else {
+                //Check if Member's Bid is the Highest
+                $highest_bid = ProductBidder::where('product_id', $request->product_id)->orderBy('bid_value', 'desc')->first();
+                if ($request->user()->member->id == $highest_bid->member_id) {
+                    $response['status'] = false;
+                    $response['message'] = 'Bid Anda Tertinggi!';
+
+                    throw new HttpResponseException(response()->json($response, 422));
+                }
             }
 
             //Update Bid Value of Bidder
@@ -269,22 +296,6 @@ class ProductService
                     # code...
                     break;
             }
-        }
-
-        //End Bid if Bid Value equals Buy In Value
-
-        if ($request->bid_value == $product->bid_bin) {
-            $product->bid_end = now();
-            $product->winner_id = $request->user()->id;
-            $product->is_show = 0;
-            $product->save();
-
-            //Create Transaction
-            $transaction = (new TransactionService)->storeTransaction($product, $request->user()->member->id);
-            //Create Notification
-            $service = new NotificationService;
-            $service->auctionClosed($product);
-            $service->auctionWin($product, $request->user()->id);
         }
 
         return $model;
