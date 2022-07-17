@@ -174,7 +174,7 @@ class Product extends Model
     public function last_second($query, $value)
     {
         if ($value) {
-            $minus = Carbon::now()->subHour();
+            $minus = Carbon::now();
             $plus = Carbon::now()->addHour();
             return $query->whereBetween('bid_end', [$minus, $plus]);
         }
