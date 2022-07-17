@@ -89,12 +89,7 @@ class ProductService
                     $key == 'bid_start' && $request->filled('bid_start') ||
                     $key == 'bid_end' && $request->filled('bid_end')
                 ) {
-                    if ($request->bid_end <= $request->bid_start) {
-                        $response['status'] = false;
-                        $response['message'] = 'Durasi Lelang minimal 1 Jam!';
-
-                        throw new HttpResponseException(response()->json($response, 422));
-                    }
+                    
                     $product->{$key} = Date::parse($value)->format('Y-m-d H:i:s');
                 }
                 if ($key == 'bid_end_range' && $request->filled('bid_end_range')) {
