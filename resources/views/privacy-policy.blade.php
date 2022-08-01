@@ -13,7 +13,7 @@
         integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <link rel="icon" href="{{ asset('images/favicon.png') }}">
 
-    <title>{{ env('APP_NAME') }}</title>
+    <title>Dealena | Privacy Policy</title>
 </head>
 
 <body>
