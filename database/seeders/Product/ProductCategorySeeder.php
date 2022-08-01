@@ -17,24 +17,26 @@ class ProductCategorySeeder extends Seeder
         $faker = \Faker\Factory::create();
         DB::table('product_categories')->insert(
             [
-                'name' => 'Elektronik',
-                'description' => $faker->text()
-            ],
-            [
-                'name' => 'Fashion',
-                'description' => $faker->text()
-            ],
-            [
-                'name' => 'Otomotif',
-                'description' => $faker->text()
-            ],
-            [
-                'name' => 'Gaming',
-                'description' => $faker->text()
-            ],
-            [
-                'name' => 'Sport',
-                'description' => $faker->text()
+                [
+                    'name' => 'Elektronik',
+                    'description' => $faker->text()
+                ],
+                [
+                    'name' => 'Fashion',
+                    'description' => $faker->text()
+                ],
+                [
+                    'name' => 'Otomotif',
+                    'description' => $faker->text()
+                ],
+                [
+                    'name' => 'Gaming',
+                    'description' => $faker->text()
+                ],
+                [
+                    'name' => 'Sport',
+                    'description' => $faker->text()
+                ]
             ]
         );
     }
