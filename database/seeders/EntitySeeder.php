@@ -13,7 +13,7 @@ class EntitySeeder extends Seeder
      */
     public function run()
     {
-        \DB::table('provinces')->insert(array(
+        \DB::table('entities')->insert(array(
             0 =>
             array(
                 'name' => 'bid_end',

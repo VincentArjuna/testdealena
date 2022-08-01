@@ -2,6 +2,9 @@
 
 namespace App\Models\Store;
 
+use App\Models\Location\City;
+use App\Models\Location\Province;
+use App\Models\Location\Subdistrict;
 use App\Models\Product\Product;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,7 +24,7 @@ class Store extends Model
 
     public function getImageUrlAttribute()
     {
-        return ! empty($this->image)
+        return !empty($this->image)
             ? url('images/stores/' . $this->image)
             : url('images/placeholder/no-store.png');
     }
@@ -36,5 +39,20 @@ class Store extends Model
         return $this->hasMany(Product::class, 'store_id', 'id')
             ->where('bid_start', '<=', now())
             ->where('bid_end', '>=', now());
+    }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'province_id', 'province_id');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id', 'city_id');
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(Subdistrict::class, 'district_id', 'subdistrict_id');
     }
 }
