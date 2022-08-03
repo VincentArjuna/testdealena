@@ -31,7 +31,7 @@ class ProductService
 
             throw new HttpResponseException(response()->json($response, 422));
         }
-        if($store->couriers == null){
+        if ($store->couriers == null) {
             $response['status'] = false;
             $response['message'] = 'Tentukan Kurir yang Toko Anda sediakan!';
 
@@ -89,7 +89,7 @@ class ProductService
                     $key == 'bid_start' && $request->filled('bid_start') ||
                     $key == 'bid_end' && $request->filled('bid_end')
                 ) {
-                    
+
                     $product->{$key} = Date::parse($value)->format('Y-m-d H:i:s');
                 }
                 if ($key == 'bid_end_range' && $request->filled('bid_end_range')) {
@@ -237,36 +237,38 @@ class ProductService
             $model->deposit_value = $request->deposit_value;
             $model->save();
             $request->user()->member->update(['saldo' => $request->user()->member->saldo - $request->deposit_value]);
+        }
+
+        //End Bid if Bid Value equals Buy In Value
+        if ($request->bid_value == $product->bid_bin) {
+            $product->bid_end = now();
+            $product->winner_id = $request->user()->id;
+            $product->is_show = 0;
+            $product->save();
+
+            //Create Transaction
+            $transaction = (new TransactionService)->storeTransaction($product, $request->user()->member->id);
+            $this->clearDeposit($product->id, $product->winner_id);
+            //Create Notification
+            $service = new NotificationService;
+            $service->auctionClosed($product);
+            $service->auctionWin($product, $request->user()->id);
         } else {
+            //Check if Member's Bid is the Highest
+            $highest_bid = ProductBidder::where('product_id', $request->product_id)->orderBy('bid_value', 'desc')->first();
+            if ($request->user()->member->id == $highest_bid->member_id) {
+                $response['status'] = false;
+                $response['message'] = 'Bid Anda Tertinggi!';
 
-            //End Bid if Bid Value equals Buy In Value
-            if ($request->bid_value == $product->bid_bin) {
-                $product->bid_end = now();
-                $product->winner_id = $request->user()->id;
-                $product->is_show = 0;
-                $product->save();
-
-                //Create Transaction
-                $transaction = (new TransactionService)->storeTransaction($product, $request->user()->member->id);
-                //Create Notification
-                $service = new NotificationService;
-                $service->auctionClosed($product);
-                $service->auctionWin($product, $request->user()->id);
-            } else {
-                //Check if Member's Bid is the Highest
-                $highest_bid = ProductBidder::where('product_id', $request->product_id)->orderBy('bid_value', 'desc')->first();
-                if ($request->user()->member->id == $highest_bid->member_id) {
-                    $response['status'] = false;
-                    $response['message'] = 'Bid Anda Tertinggi!';
-
-                    throw new HttpResponseException(response()->json($response, 422));
-                }
+                throw new HttpResponseException(response()->json($response, 422));
             }
 
             //Update Bid Value of Bidder
             $model->bid_value = $request->bid_value;
             $model->save();
             $request->user()->member->update(['saldo' => $request->user()->member->saldo - $request->deposit_value]);
+
+            $this->clearDeposit($product->id, $model->member_id);
             switch ($product->bid_end_range) {
                 case '6':
                     $product->bid_end = Date::parse($product->bid_end)
@@ -293,12 +295,15 @@ class ProductService
             }
         }
 
+
         return $model;
     }
 
-    public function clearDeposit($product_bidder_id)
+    public function clearDeposit($product_id, $winner_id)
     {
-        $product_bidders = ProductBidder::all()->except($product_bidder_id);
+        $product_bidders = ProductBidder::where('product_id', $product_id)
+            ->where('member_id', '!=', $winner_id)
+            ->get();
         $product_bidders->each(function ($product_bidder) {
             $member = Member::find($product_bidder->member_id);
             $member->saldo = $member->saldo + $product_bidder->deposit_value;
