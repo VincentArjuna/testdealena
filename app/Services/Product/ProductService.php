@@ -229,14 +229,12 @@ class ProductService
         $model = ProductBidder::where('member_id', $request->user()->member->id)
             ->where('product_id', $request->product_id)->first();
         if (!$model) {
-
             $model = new ProductBidder();
             $model->product_id = $request->product_id;
             $model->member_id = $request->user()->member->id;
             $model->bid_value = $request->bid_value;
             $model->deposit_value = $request->deposit_value;
             $model->save();
-            $request->user()->member->update(['saldo' => $request->user()->member->saldo - $request->deposit_value]);
         }
 
         //End Bid if Bid Value equals Buy In Value
@@ -245,6 +243,10 @@ class ProductService
             $product->winner_id = $request->user()->id;
             $product->is_show = 0;
             $product->save();
+
+            $model->bid_value = $request->bid_value;
+            $model->save();
+            $request->user()->member->update(['saldo' => $request->user()->member->saldo - $request->deposit_value]);
 
             //Create Transaction
             $transaction = (new TransactionService)->storeTransaction($product, $request->user()->member->id);
