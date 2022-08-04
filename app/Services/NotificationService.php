@@ -56,8 +56,7 @@ class NotificationService
 
     public function auctionWin($product, $winner_id)
     {
-        $member = Member::find($winner_id);
-        $user = User::find($member->user_id);
+        $user = User::find($winner_id);
         $user->notify(new AuctionWinNotification($product->id));
         $member = Member::where('user_id', $user->id)->first();
         $detail = "Anda telah memenangkan lelang \"" .  strtoupper($product->name)  . "\"";

@@ -28,6 +28,7 @@ class ProductSubmitRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'product_category_id' => 'required',
+            'description' => 'required',
             'weight' => 'required|numeric',
             'start_bid' => 'required|numeric',
             'bid_multiplier' => 'required|numeric',
@@ -81,6 +82,7 @@ class ProductSubmitRequest extends FormRequest
             'images_back' => 'Back Product Image',
             'images_left' => 'Left Product Image',
             'images_right' => 'Right Product Image',
+            'quality' => 'Quality',
         ];
     }
 
