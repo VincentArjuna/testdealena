@@ -4,6 +4,7 @@ namespace App\Models\Chat;
 
 use App\Models\User;
 use App\Models\conversation;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +19,12 @@ class Message extends Model
         'body',
         'sender'
     ];
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->toAtomString();
+    }
+
 
     public function conversation()
     {

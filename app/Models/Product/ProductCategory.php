@@ -9,7 +9,7 @@ use Kalnoy\Nestedset\NodeTrait;
 
 class ProductCategory extends Model
 {
-    use HasFactory, NodeTrait;
+    use HasFactory;
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 

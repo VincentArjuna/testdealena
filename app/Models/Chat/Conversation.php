@@ -8,6 +8,7 @@ use App\Models\Chat\Message;
 use App\Models\Member\Member;
 use App\Models\Store\Store;
 use App\Models\User;
+use DateTimeInterface;
 
 class Conversation extends Model
 {
@@ -25,6 +26,11 @@ class Conversation extends Model
     protected $appends = [
         'last_message'
     ];
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->toAtomString();
+    }
 
     public function messages()
     {
