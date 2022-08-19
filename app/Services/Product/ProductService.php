@@ -235,6 +235,14 @@ class ProductService
             $model->bid_value = $request->bid_value;
             $model->deposit_value = $request->deposit_value;
             $model->save();
+        }else{
+            $highest_bid = ProductBidder::where('product_id', $request->product_id)->orderBy('bid_value', 'desc')->first();
+            if ($request->user()->member->id == $highest_bid->member_id) {
+                $response['status'] = false;
+                $response['message'] = 'Bid Anda Tertinggi!';
+
+                throw new HttpResponseException(response()->json($response, 422));
+            }
         }
 
         //End Bid if Bid Value equals Buy In Value
@@ -256,14 +264,6 @@ class ProductService
             $service->auctionClosed($product);
             $service->auctionWin($product, $request->user()->id);
         } else {
-            //Check if Member's Bid is the Highest
-            $highest_bid = ProductBidder::where('product_id', $request->product_id)->orderBy('bid_value', 'desc')->first();
-            if ($request->user()->member->id == $highest_bid->member_id) {
-                $response['status'] = false;
-                $response['message'] = 'Bid Anda Tertinggi!';
-
-                throw new HttpResponseException(response()->json($response, 422));
-            }
 
             //Update Bid Value of Bidder
             $model->bid_value = $request->bid_value;

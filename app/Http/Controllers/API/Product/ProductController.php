@@ -24,12 +24,12 @@ class ProductController extends Controller
         $product = Product::find($request->id);
         if (
             empty(auth('sanctum')->user()) ||
+            empty(auth('sanctum')->user()->store) ||
             auth('sanctum')->user()->store->id !== $product->store_id
         ) {
             $product->view_count = $product->view_count + 1;
             $product->save();
         }
-
 
         // Get list bidders
         $bidders = $product->bidders()
