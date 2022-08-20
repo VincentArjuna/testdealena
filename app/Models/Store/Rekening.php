@@ -16,7 +16,8 @@ class Rekening extends Model
 
     public function getBankNameAttribute()
     {
-        return Bank::select('name')->where('id', $this->bank_id);
+        $bank = Bank::find($this->bank_id);
+        return $bank->name;
     }
 
     public function bank()

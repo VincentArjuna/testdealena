@@ -19,6 +19,7 @@ class RekeningController extends Controller
     public function insert(Request $request)
     {
         $rekening = Rekening::create([
+            'store_id' => $request->user()->store->id,
             'bank_id' => $request->bank_id,
             'atas_nama' => $request->atas_nama,
             'no_rek' => $request->no_rek
