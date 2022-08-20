@@ -20,10 +20,11 @@ class DatabaseSeeder extends Seeder
             ProductCategorySeeder::class
         ]);
         */
-        $this->call(CitiesTableSeeder::class);
-        $this->call(ProvincesTableSeeder::class);
-        $this->call(SubdistrictsTableSeeder::class);
-        $this->call(ProductCategorySeeder::class);
-        $this->call(EntitySeeder::class);
+        //$this->call(CitiesTableSeeder::class);
+        //$this->call(ProvincesTableSeeder::class);
+        //$this->call(SubdistrictsTableSeeder::class);
+        //$this->call(ProductCategorySeeder::class);
+        //$this->call(EntitySeeder::class);
+        $this->call(BankSeeder::class);
     }
 }

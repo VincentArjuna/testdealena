@@ -61,6 +61,10 @@ Route::get('/product/show', [App\Http\Controllers\API\Product\ProductController:
 //Midtrans Notification
 Route::post('/midtrans/payment-notification', [App\Http\Controllers\API\Midtrans\MidtransController::class, 'checkPayment']);
 
+//Bank
+Route::get('/bank/list', [App\Http\Controllers\API\BankController::class, 'index']);
+
+
 // Auth access routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     //run websocket
@@ -111,6 +115,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/store/update-couriers', [App\Http\Controllers\API\Store\StoreController::class, 'updateCouriers']);
     Route::get('/store/get-courier', [App\Http\Controllers\API\Location\LocationController::class, 'getMemberCourier']);
     Route::get('/store/transaction-history', [App\Http\Controllers\API\Midtrans\MidtransController::class, 'getPaymentHistory']);
+
+    //Rekening
+    Route::get('/rekening/list', [App\Http\Controllers\API\Store\RekeningController::class, 'list']);
+    Route::post('/rekening/insert', [App\Http\Controllers\API\Store\RekeningController::class, 'insert']);
+    Route::get('/rekening/delete/{id}', [App\Http\Controllers\API\Store\RekeningController::class, 'delete']);
 
     // Product routes
     Route::post('/product/store', [App\Http\Controllers\API\Product\ProductController::class, 'store']);

@@ -8,8 +8,12 @@ use Filament\Widgets\LineChartWidget;
 
 class MonthlyProduct extends LineChartWidget
 {
-    protected static ?string $heading = 'Chart';
-    
+    protected static ?string $heading = 'Product Auctioned By Month';
+
+    protected static ?int $sort = 3;
+
+    protected int|string|array $columnSpan = 1;
+
     protected function getData(): array
     {
 
