@@ -48,14 +48,12 @@ class ProductResource extends Resource
                     ->label('User')
                     ->options(User::all()->pluck('name', 'id'))
                     ->required()
-                    ->searchable()
-                    ->required(),
+                    ->searchable(),
                 Select::make('store_id')
                     ->label('Store')
                     ->options(Store::all()->pluck('name', 'id'))
                     ->required()
-                    ->searchable()
-                    ->required(),
+                    ->searchable(),
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255),
@@ -63,8 +61,7 @@ class ProductResource extends Resource
                     ->label('Category')
                     ->options(ProductCategory::all()->pluck('name', 'id'))
                     ->required()
-                    ->searchable()
-                    ->required(),
+                    ->searchable(),
                 Fieldset::make('Image')
                     ->schema([
                         FileUpload::make('image_front')
