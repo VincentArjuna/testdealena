@@ -24,7 +24,7 @@ class RekeningResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
-    protected static ?int $navigationSort = 0;
+    protected static ?int $navigationSort = 4;
 
     protected static function getNavigationBadge(): ?string
     {
