@@ -21,7 +21,9 @@ class TransactionController extends Controller
 
         return response()->json([
             'transactions' => $user->member
-                ->transactions()->paginate(10)
+                ->transactions()
+                ->latest()
+                ->paginate(10)
         ]);
     }
 

@@ -30,7 +30,7 @@ class MidtransController extends Controller
 
         return response()->json([
             'token' => $snapToken,
-            'redirect_url' => "https://app.sandbox.midtrans.com/snap/v2/vtweb/" . $snapToken,
+            'redirect_url' => "https://app.midtrans.com/snap/v2/vtweb/" . $snapToken,
         ]);
     }
 
@@ -58,7 +58,7 @@ class MidtransController extends Controller
         $snapToken = $service->getSnapToken();
         return response()->json([
             'token' => $snapToken,
-            'redirect_url' => "https://app.sandbox.midtrans.com/snap/v2/vtweb/" . $snapToken,
+            'redirect_url' => "https://app.midtrans.com/snap/v2/vtweb/" . $snapToken,
         ]);
     }
 

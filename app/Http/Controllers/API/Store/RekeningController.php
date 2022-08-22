@@ -28,7 +28,7 @@ class RekeningController extends Controller
         return response()->json([
             'message' => 'Sukses Menambahkan Rekening',
             'rekening' => $rekening
-        ], 201);
+        ], 200);
     }
 
     public function delete($id)
@@ -36,6 +36,6 @@ class RekeningController extends Controller
         Rekening::destroy($id);
         return response()->json([
             'message' => 'Sukses Menghapus Rekening',
-        ], 204);
+        ], 200);
     }
 }
