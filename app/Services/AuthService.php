@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\RegisterEmail;
 use App\Models\Member\Member;
 use App\Models\User;
 use App\Notifications\User\PasswordResetNotification;
@@ -46,7 +47,7 @@ class AuthService
         }
         DB::commit();
         Auth::attempt(['email' => $user->email, 'password' => $request['password']]);
-        event(new Registered($user));
+        RegisterEmail::dispatch($user);
         return [
             'user' => $user,
             'address' => $address,
