@@ -36,8 +36,8 @@ class RegisterRequest extends FormRequest
             'subdistrict_id' => 'required|numeric',
             'postal_code' => 'required|numeric',
             'address' => 'required|string',
-            'birth_date' => 'string',
-            'gender' => 'string',
+            'birth_date' => 'required|string',
+            'gender' => 'required|string',
             'photo_url' => 'string|nullable',
         ];
     }

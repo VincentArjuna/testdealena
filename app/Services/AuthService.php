@@ -24,7 +24,6 @@ class AuthService
      */
     public function register(Request $request)
     {
-        DB::beginTransaction();
         $user = User::create([
             'name' => $request['name'],
             'username' => $request['username'],
@@ -45,7 +44,7 @@ class AuthService
                 'image' => $request->photo_url ? $request->photo_url : null,
             ]);
         }
-        DB::commit();
+        
         Auth::attempt(['email' => $user->email, 'password' => $request['password']]);
         RegisterEmail::dispatch($user);
         return [
