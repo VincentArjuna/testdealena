@@ -77,7 +77,7 @@ class TransactionService
         $user_id = $transaction->store_detail['user_id'];
         $deposit_value = $transaction->products['min_deposit'];
         $member = Member::where('user_id', $user_id)->first();
-        $member->saldo += $transaction->grandtotal + $deposit_value;
+        $member->saldo += $transaction->grandtotal + $deposit_value - 5000;
         $member->save();
         $payment = Payment::create([
             'member_id' => $member->id,
